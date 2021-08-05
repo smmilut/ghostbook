@@ -1,0 +1,55 @@
+{
+    "game_version": "x.y.z",
+    "monsters": [
+        {
+            "name": "monster X",
+            "details": "details for monster X on a single line blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, ",
+            "clues": [
+                "writing",
+                "fingerprints",
+                "emf5"
+            ]
+        },
+        {
+            "name": "monster Y",
+            "details": "details for monster Y on a single line blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, blabla, ",
+            "clues": [
+                "emf5",
+                "freezing",
+                "orbs"
+            ]
+        }
+    ],
+    "clues": [
+        {
+            "key": "emf5",
+            "name": "EMF level 5",
+            "details": "clue details for emf 5, blablabla"
+        },
+        {
+            "key": "spiritbox",
+            "name": "Spirit box",
+            "details": "clue details, blablabla"
+        },
+        {
+            "key": "fingerprints",
+            "name": "Fingerprints",
+            "details": "clue details, blablabla"
+        },
+        {
+            "key": "freezing",
+            "name": "Freezing temperatures",
+            "details": "clue details, blablabla"
+        },
+        {
+            "key": "writing",
+            "name": "Ghost writing",
+            "details": "clue details, blablabla"
+        },
+        {
+            "key": "orbs",
+            "name": "Ghost orbs",
+            "details": "clue details, blablabla"
+        }
+    ]
+}

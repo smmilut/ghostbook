@@ -1,0 +1,37 @@
+/****  General  ****/
+body {
+  margin: 10px;
+}
+
+body, button, input, select, option {
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", sans-serif;
+  font-size: 100%;
+  color: #ddd;
+  background-color: #222;
+}
+
+
+/**** Tables ****/
+table {
+  border-bottom: 2px solid #324;
+  box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.2);
+}
+
+td, th {
+  border: 1px solid #222;
+  padding: 8px;
+}
+
+th {
+  background-color: #324;
+  color: #BBB;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #333;
+}
+
+tbody tr:hover {
+  background-color: #111;
+}
+
