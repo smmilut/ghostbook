@@ -11,7 +11,7 @@ const MonsterCodex = (function buildMonsterCodex() {
     */
     objMonsterCodex.fetchData = function Codex_fetchData(url) {
         return utils.Http.Request({
-            url: url || "../data/monsters.json"
+            url: url || "data/monsters.json"
         })
             .then(function gotMonsters(data) {
                 json_obj = JSON.parse(data.responseText);
