@@ -15,7 +15,6 @@ const MonsterCodex = (function buildMonsterCodex() {
         })
             .then(function gotMonsters(data) {
                 json_obj = JSON.parse(data.responseText);
-                console.log(json_obj);
                 const elVersionInfo = document.getElementById("versioninfo");
                 elVersionInfo.innerHTML = json_obj.game_version;
                 updateVisibleMonsters();
@@ -116,9 +115,10 @@ const MonsterCodex = (function buildMonsterCodex() {
 
             let columnIndex = 1;
             for (let clueIndex = 0; clueIndex < monster.clues.length; clueIndex++) {
-                const clueName = monster.clues[clueIndex];
-                if (showAll || !selectedClues.includes(clueName)) {
+                const clueKey = monster.clues[clueIndex];
+                if (showAll || !selectedClues.includes(clueKey)) {
                     const cellClue = tableRow.insertCell(columnIndex);
+                    const clueName = getClueForKey(clueKey);
                     cellClue.innerHTML = clueName;
                     columnIndex += 1;
                 }
@@ -127,6 +127,18 @@ const MonsterCodex = (function buildMonsterCodex() {
         objMonsterCodex.clearDetails();
         elSuspects.innerHTML = "";
         elSuspects.appendChild(tableBody);
+    }
+
+    /*
+    * get clue name when given the clue key
+    */
+    function getClueForKey(clueKey) {
+        for (let clueIndex = 0; clueIndex < json_obj.clues.length; clueIndex++) {
+            const clue = json_obj.clues[clueIndex];
+            if(clueKey == clue.key) {
+                return clue.name;
+            }
+        }
     }
 
     /*
