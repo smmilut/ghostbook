@@ -10,3 +10,7 @@ body {
 #details {
     margin: 20px;
 }
+
+.collapsed {
+    display: none;
+}

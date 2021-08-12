@@ -17,38 +17,47 @@
         <p>Tool to help with ghost clues.</p>
     </header>
     <div>
-        <h2>clues :</h2>
+        <h2>Clues :</h2>
         <select id="clues" multiple size="6"></select>
     </div>
 
     <div>
-        <h2>monsters :</h2>
+        <h2>Ghosts :</h2>
         <table id="suspects"></table>
     </div>
 
     <div id="details"></div>
 
     <div>
-        <h1>Usage</h1>
-        <p>In the list of clues :
-        <ul>
-            <li>Click a clue to make it selected.</li>
-            <li>Click a selected clue to make it unselected.</li>
-            <li>Ctrl+click to select multiple clues.</li>
-        </ul>
-        </p>
-        <p>In the resulting list of monsters :
-        <ul>
-            <li>Click a monster to get details about this monster.</li>
-            <li>The only displayed monsters are those who match the selected clue(s).</li>
-            <li>The only displayed clues are those that are not a selected clue.</li>
-        </ul>
-        </p>
+        <h1 class="clickcollapse">Usage and information</h1>
+        <div class="collapsed">
+            <div>
+                <h2>Usage help :</h2>
+                <p>In the list of clues :
+                <ul>
+                    <li>Click a clue to make it selected.</li>
+                    <li>Click a selected clue to make it unselected.</li>
+                    <li>Ctrl+click to select multiple clues.</li>
+                </ul>
+                </p>
+                <p>In the resulting list of monsters :
+                <ul>
+                    <li>Click a monster to get details about this monster.</li>
+                    <li>The only displayed monsters are those who match the selected clue(s).</li>
+                    <li>The only displayed clues are those that are not a selected clue.</li>
+                </ul>
+                </p>
+            </div>
+            <div>
+                <h2>Other info :</h2>
+                <p>Game version : <span id="versioninfo"></span></p>
+                <p>See Github for : <a href="https://github.com/smmilut/ghostbook">code</a>, <a
+                        href="https://github.com/smmilut/ghostbook">license</a>, <a
+                        href="https://github.com/smmilut/ghostbook">privacy</a>.</p>
+            </div>
+        </div>
     </div>
-    <footer>
-        <p>Game version : <span id="versioninfo"></span></p>
-        <p>See Github for : <a href="https://github.com/smmilut/ghostbook">code</a>, <a href="https://github.com/smmilut/ghostbook">license</a>, <a href="https://github.com/smmilut/ghostbook">privacy</a>.</p>
-    </footer>
+
     <script src="www/index.js" type="module"></script>
 </body>
 
