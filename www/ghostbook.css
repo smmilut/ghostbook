@@ -7,6 +7,32 @@ body {
     font-family: "Lucida Console", Monaco, monospace;
 }
 
+h2 {
+    margin-top: 0px;
+}
+
+#details {
+    color: #aaa;
+    text-align: justify;
+}
+
+#details h2 {
+    color: #fff;
+    text-align: left;
+}
+
+#details h3 {
+    margin-bottom: 0px;
+    margin-top: 5px;
+    margin-left: 10px;
+    color: #ddd;
+    text-align: center;
+}
+
+#details strong {
+    color: #fff;
+}
+
 .collapsed {
     display: none;
 }

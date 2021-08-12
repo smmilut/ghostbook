@@ -29,7 +29,13 @@ export const MonsterCodex = (function buildMonsterCodex() {
         const elDetails = document.getElementById("details");
         json_obj.monsters.forEach(function findMonsterNamed(monster) {
             if (monster.name == monsterName) {
-                elDetails.innerHTML = monster.details;
+                const nameHeader = document.createElement("h2");
+                nameHeader.innerText = monster.name + " :";
+                const detailsDiv = document.createElement("div");
+                detailsDiv.innerHTML = monster.details;
+                elDetails.innerHTML = "";
+                elDetails.append(nameHeader);
+                elDetails.append(detailsDiv);
             }
         });
     };
@@ -39,7 +45,7 @@ export const MonsterCodex = (function buildMonsterCodex() {
     */
     objMonsterCodex.clearDetails = function Codex_clearDetails(monsterName) {
         const elDetails = document.getElementById("details");
-        elDetails.innerHTML = "";
+        elDetails.innerHTML = "(click a ghost for details)";
     };
 
     /*
