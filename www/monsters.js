@@ -159,7 +159,8 @@ export const MonsterCodex = (function buildMonsterCodex() {
         const elSuspects = document.getElementById("suspects");
         const tableBody = document.createElement("tbody");
 
-        validMonsters.forEach(function displayMonsterRow(monster) {
+        for (let monsterIndex = 0; monsterIndex < validMonsters.length; monsterIndex++) {
+            const monster = validMonsters[monsterIndex];
             // New row for each monster
             let tableRow = tableBody.insertRow(-1);
             tableRow.addEventListener("click", monsterClicked, false);
@@ -172,6 +173,11 @@ export const MonsterCodex = (function buildMonsterCodex() {
             const cellName = tableRow.insertCell(columnIndex++);
             cellName.classList.add("monstername")
             cellName.innerHTML = monster.name;
+            if (validMonsters.length == 1) {
+                cellName.classList.add("foundmonster");
+                showDetails(monster.key);
+                break;
+            }
             // All other cells display the remaining clues
             for (let clueIndex = 0; clueIndex < monster.clues.length; clueIndex++) {
                 const clueKey = monster.clues[clueIndex];
@@ -182,8 +188,10 @@ export const MonsterCodex = (function buildMonsterCodex() {
                     cellClue.innerHTML = clueName;
                 }
             }
-        });
-        clearDetails();
+        };
+        if (validMonsters.length != 1) {
+            clearDetails();
+        }
         elSuspects.innerHTML = "";
         elSuspects.appendChild(tableBody);
     }

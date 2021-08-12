@@ -41,10 +41,22 @@ h2 {
     font-weight: bolder;
 }
 
+.foundmonster {
+    background-color: green;
+}
+
 .unmatched {
     color: red;
     cursor: not-allowed;
     font-style: italic;
+}
+
+.unmatched::before {
+    content: "(";
+}
+
+.unmatched::after {
+    content: ")";
 }
 
 /* collapse system */
