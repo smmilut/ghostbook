@@ -115,7 +115,7 @@ export const MonsterCodex = (function buildMonsterCodex() {
             }
         }
     }
-    
+
 
     /*
     * return a list of monsters that match the selected clues
@@ -156,30 +156,26 @@ export const MonsterCodex = (function buildMonsterCodex() {
         }
 
         /*** update the display of the monster table */
-        const elSuspects = document.getElementById("suspects");
-        const tableBody = document.createElement("tbody");
+        const monsterTableBuilder = MonsterTableBuilder();
 
         if (validMonsters.length == 0) {
-            displayMonsterError();
+            // impossible combination of clues
+            monsterTableBuilder.createRow();
+            monsterTableBuilder.showError("No monsters are valid for this combination of clues.");
+            monsterTableBuilder.finalize();
             return;
         }
 
         for (let monsterIndex = 0; monsterIndex < validMonsters.length; monsterIndex++) {
             const monster = validMonsters[monsterIndex];
             // New row for each monster
-            let tableRow = tableBody.insertRow(-1);
-            tableRow.addEventListener("click", monsterClicked, false);
-            let columnIndex = 0;
+            monsterTableBuilder.createRow();
             // First invisible cell displays the monster key
-            const cellKey = tableRow.insertCell(columnIndex++);
-            cellKey.innerHTML = monster.key;
-            cellKey.style.display = "none";
+            monsterTableBuilder.createCellKey(monster.key);
             // Second cell displays the monster name
-            const cellName = tableRow.insertCell(columnIndex++);
-            cellName.classList.add("monstername")
-            cellName.innerHTML = monster.name;
+            monsterTableBuilder.createCellName(monster.name);
             if (validMonsters.length == 1) {
-                cellName.classList.add("foundmonster");
+                monsterTableBuilder.markCellFound();
                 showDetails(monster.key);
                 break;
             }
@@ -188,17 +184,14 @@ export const MonsterCodex = (function buildMonsterCodex() {
                 const clueKey = monster.clues[clueIndex];
                 if (showAll || !selectedClues.includes(clueKey)) {
                     // Display this clue
-                    const cellClue = tableRow.insertCell(columnIndex++);
-                    const clueName = getClueForKey(clueKey);
-                    cellClue.innerHTML = clueName;
+                    monsterTableBuilder.createCellClue(clueKey);
                 }
             }
         };
         if (validMonsters.length != 1) {
             clearDetails();
         }
-        elSuspects.innerHTML = "";
-        elSuspects.appendChild(tableBody);
+        monsterTableBuilder.finalize();
     }
 
     /*
@@ -221,21 +214,84 @@ export const MonsterCodex = (function buildMonsterCodex() {
         showDetails(monsterKey);
     }
 
-    /*
-    * Update the monster table to show an error if the combination of clues is impossible
-    */
-    function displayMonsterError() {
-        const elSuspects = document.getElementById("suspects");
+    const MonsterTableBuilder = function build_MonsterTableBuilder() {
+        const objMonsterTableBuilder = {};
+
         const tableBody = document.createElement("tbody");
 
-        let tableRow = tableBody.insertRow(-1);
-        const cellError = tableRow.insertCell(0);
-        cellError.classList.add("monstererror")
-        cellError.innerHTML = "No monsters are valid for this combination of clues.";
+        let currentTableRow;
+        let currentColumnIndex;
+        let currentCell;
 
-        elSuspects.innerHTML = "";
-        elSuspects.appendChild(tableBody);
-    }
+        objMonsterTableBuilder.createRow = function objMonsterTableBuilder_newRow() {
+            currentTableRow = tableBody.insertRow(-1);
+            currentTableRow.addEventListener("click", monsterClicked, false);
+            currentColumnIndex = 0;
+            return currentTableRow;
+        };
+        
+        /*
+        * Create a table cell that will contain the monster's key
+        */
+        objMonsterTableBuilder.createCellKey = function objMonsterTableBuilder_createCellKey(monsterKey) {
+            currentCell = currentTableRow.insertCell(currentColumnIndex++);
+            currentCell.innerHTML = monsterKey;
+            // This special cell is invisible
+            currentCell.style.display = "none";
+            return currentCell;
+        };
+
+        /*
+        * Create a table cell that will contain the monster's name
+        */
+        objMonsterTableBuilder.createCellName = function objMonsterTableBuilder_createCellName(monsterName) {
+            currentCell = currentTableRow.insertCell(currentColumnIndex++);
+            // special style for the mosnter name
+            currentCell.classList.add("monstername")
+            currentCell.innerHTML = monsterName;
+            return currentCell;
+        };
+
+        /*
+        * Mark the current cell to show that this monster was found
+        */
+        objMonsterTableBuilder.markCellFound = function objMonsterTableBuilder_markCellFound() {
+            currentCell.classList.add("foundmonster");
+            return currentCell;
+        };
+
+        /*
+        * Create a new table cell for a monster clue
+        */
+        objMonsterTableBuilder.createCellClue = function objMonsterTableBuilder_createCellClue(clueKey) {
+            currentCell = currentTableRow.insertCell(currentColumnIndex++);
+            const clueName = getClueForKey(clueKey);
+            currentCell.innerHTML = clueName;
+            return currentCell;
+        };
+
+        /*
+        * Show an error inside the table
+        */
+        objMonsterTableBuilder.showError = function objMonsterTableBuilder_showError(messageText) {
+            currentCell = currentTableRow.insertCell(currentColumnIndex++);
+            currentCell.classList.add("monstererror")
+            currentCell.innerHTML = messageText;
+            return currentCell;
+        };
+
+        /*
+        * Finalize the table and add it to the page
+        */
+        objMonsterTableBuilder.finalize = function objMonsterTableBuilder_finalize() {
+            const elSuspects = document.getElementById("suspects");
+            elSuspects.innerHTML = "";
+            elSuspects.appendChild(tableBody);
+            return tableBody;
+        };
+
+        return objMonsterTableBuilder;
+    };
 
     return objMonsterCodex;
 })();
