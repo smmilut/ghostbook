@@ -170,10 +170,8 @@ export const MonsterCodex = (function buildMonsterCodex() {
             cellKey.style.display = "none";
             // Second cell displays the monster name
             const cellName = tableRow.insertCell(columnIndex++);
-            const elName = document.createElement("span");
-            elName.classList.add("monstername")
-            elName.innerHTML = monster.name;
-            cellName.append(elName);
+            cellName.classList.add("monstername")
+            cellName.innerHTML = monster.name;
             // All other cells display the remaining clues
             for (let clueIndex = 0; clueIndex < monster.clues.length; clueIndex++) {
                 const clueKey = monster.clues[clueIndex];
