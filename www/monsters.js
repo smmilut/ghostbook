@@ -14,27 +14,43 @@ export const MonsterCodex = (function buildMonsterCodex() {
             url: url || "data/monsters.json"
         })
             .then(function gotMonsters(data) {
-                json_obj = JSON.parse(data.responseText);
-                const elVersionInfo = document.getElementById("versioninfo");
-                elVersionInfo.innerHTML = json_obj.game_version;
+                updateLocalDatabase(data.responseText);
+                updateVersionInfo()
                 updateVisibleMonsters();
                 initCluesHtml();
             });
     };
 
     /*
+    * Update monster and clue data from json text
+    */
+    function updateLocalDatabase(jsonText) {
+        json_obj = JSON.parse(jsonText);
+    }
+
+    /*
+    * Display info about the game version
+    */
+    function updateVersionInfo() {
+        const elVersionInfo = document.getElementById("versioninfo");
+        elVersionInfo.innerHTML = json_obj.game_version;
+    }
+
+    /*
     * Display the details about that monster
     */
-    objMonsterCodex.showDetails = function Codex_showDetails(monsterKey) {
+    function showDetails(monsterKey) {
         const elDetails = document.getElementById("details");
         json_obj.monsters.forEach(function findMonsterNamed(monster) {
             if (monster.key == monsterKey) {
+                elDetails.innerHTML = "";
+                // Add monster name as title
                 const nameHeader = document.createElement("h2");
                 nameHeader.innerText = monster.name + " :";
+                elDetails.append(nameHeader);
+                // Add details from database
                 const detailsDiv = document.createElement("div");
                 detailsDiv.innerHTML = monster.details;
-                elDetails.innerHTML = "";
-                elDetails.append(nameHeader);
                 elDetails.append(detailsDiv);
             }
         });
@@ -43,10 +59,10 @@ export const MonsterCodex = (function buildMonsterCodex() {
     /*
     * Clear the monster details display
     */
-    objMonsterCodex.clearDetails = function Codex_clearDetails(monsterName) {
+    function clearDetails(monsterName) {
         const elDetails = document.getElementById("details");
         elDetails.innerHTML = "(click a ghost for details)";
-    };
+    }
 
     /*
     * Init the list of clues
@@ -76,10 +92,9 @@ export const MonsterCodex = (function buildMonsterCodex() {
     }
 
     /*
-    * return a list of monsters that match the selecetd clues
+    * return a list of monsters that match the selected clues
     */
     function getMatchingMonsters(selectedClues) {
-
         return json_obj.monsters.filter(function verifyMonster(monster) {
             for (let clueIndex = 0; clueIndex < selectedClues.length; clueIndex++) {
                 const clueName = selectedClues[clueIndex];
@@ -92,16 +107,21 @@ export const MonsterCodex = (function buildMonsterCodex() {
             // all selected clues match the monster's clues
             return true;
         });
-
     }
 
     /*
     * update the list of visible monsters and their displayed clues
     */
     function updateVisibleMonsters(selectedClues) {
+        /*** prepare the list of monsters and clues */
+        // do we show all clues anyway ?
         let showAll;
+        // the list of only the monsters that match the selected clues
         let validMonsters;
         if (selectedClues == undefined || selectedClues.length == 0) {
+            // Selection is undefined when initializing.
+            // Selection is empty when unselecting all.
+            // ==> Showing all monsters.
             showAll = true;
             validMonsters = json_obj.monsters;
         } else {
@@ -109,30 +129,37 @@ export const MonsterCodex = (function buildMonsterCodex() {
             validMonsters = getMatchingMonsters(selectedClues);
         }
 
+        /*** update the display of the monster table */
         const elSuspects = document.getElementById("suspects");
         const tableBody = document.createElement("tbody");
 
         validMonsters.forEach(function displayMonsterRow(monster) {
+            // New row for each monster
             let tableRow = tableBody.insertRow(-1);
-            const cellKey = tableRow.insertCell(0);
+            tableRow.addEventListener("click", monsterClicked, false);
+            let columnIndex = 0;
+            // First invisible cell displays the monster key
+            const cellKey = tableRow.insertCell(columnIndex++);
             cellKey.innerHTML = monster.key;
             cellKey.style.display = "none";
-            const cellName = tableRow.insertCell(1);
-            cellName.innerHTML = monster.name;
-            tableRow.addEventListener("click", monsterClicked, false);
-
-            let columnIndex = 2;
+            // Second cell displays the monster name
+            const cellName = tableRow.insertCell(columnIndex++);
+            const elName = document.createElement("span");
+            elName.classList.add("monstername")
+            elName.innerHTML = monster.name;
+            cellName.append(elName);
+            // All other cells display the remaining clues
             for (let clueIndex = 0; clueIndex < monster.clues.length; clueIndex++) {
                 const clueKey = monster.clues[clueIndex];
                 if (showAll || !selectedClues.includes(clueKey)) {
-                    const cellClue = tableRow.insertCell(columnIndex);
+                    // Display this clue
+                    const cellClue = tableRow.insertCell(columnIndex++);
                     const clueName = getClueForKey(clueKey);
                     cellClue.innerHTML = clueName;
-                    columnIndex += 1;
                 }
             }
         });
-        objMonsterCodex.clearDetails();
+        clearDetails();
         elSuspects.innerHTML = "";
         elSuspects.appendChild(tableBody);
     }
@@ -143,7 +170,7 @@ export const MonsterCodex = (function buildMonsterCodex() {
     function getClueForKey(clueKey) {
         for (let clueIndex = 0; clueIndex < json_obj.clues.length; clueIndex++) {
             const clue = json_obj.clues[clueIndex];
-            if(clueKey == clue.key) {
+            if (clueKey == clue.key) {
                 return clue.name;
             }
         }
@@ -154,7 +181,7 @@ export const MonsterCodex = (function buildMonsterCodex() {
     */
     function monsterClicked(event) {
         const monsterKey = event.target.parentElement.firstChild.innerText;
-        objMonsterCodex.showDetails(monsterKey);
+        showDetails(monsterKey);
     }
 
     return objMonsterCodex;
