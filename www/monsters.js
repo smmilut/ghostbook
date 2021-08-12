@@ -89,7 +89,33 @@ export const MonsterCodex = (function buildMonsterCodex() {
             }
         }
         updateVisibleMonsters(selectedClues);
+        styleUnmatchingClues(selectedClues);
     }
+
+    /*
+    * mark all the clues that are impossible with the current selected combination
+    */
+    function styleUnmatchingClues(selectedClues) {
+        const matchingMonsters = getMatchingMonsters(selectedClues);
+        const options = document.getElementById("clues").options;
+        for (let optionIndex = 0; optionIndex < options.length; optionIndex++) {
+            const option = options[optionIndex];
+            // first, style all as unmatched
+            option.classList.add("unmatched");
+            for (let monsterIndex = 0; monsterIndex < matchingMonsters.length; monsterIndex++) {
+                const monster = matchingMonsters[monsterIndex];
+                for (let monsterClueIndex = 0; monsterClueIndex < monster.clues.length; monsterClueIndex++) {
+                    const monsterClueKey = monster.clues[monsterClueIndex];
+                    if (monsterClueKey == option.value) {
+                        // at least one monster has this clue
+                        // now style as matched
+                        option.classList.remove("unmatched");
+                    }
+                }
+            }
+        }
+    }
+    
 
     /*
     * return a list of monsters that match the selected clues

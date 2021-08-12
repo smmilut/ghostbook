@@ -41,6 +41,12 @@ h2 {
     font-weight: bolder;
 }
 
+.unmatched {
+    color: red;
+    cursor: not-allowed;
+    font-style: italic;
+}
+
 /* collapse system */
 .collapsed {
     display: none;
