@@ -45,6 +45,11 @@ h2 {
     background-color: green;
 }
 
+.monstererror {
+    background-color: red;
+    font-style: italic;
+}
+
 .unmatched {
     color: red;
     cursor: not-allowed;

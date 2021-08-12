@@ -159,6 +159,11 @@ export const MonsterCodex = (function buildMonsterCodex() {
         const elSuspects = document.getElementById("suspects");
         const tableBody = document.createElement("tbody");
 
+        if (validMonsters.length == 0) {
+            displayMonsterError();
+            return;
+        }
+
         for (let monsterIndex = 0; monsterIndex < validMonsters.length; monsterIndex++) {
             const monster = validMonsters[monsterIndex];
             // New row for each monster
@@ -214,6 +219,22 @@ export const MonsterCodex = (function buildMonsterCodex() {
     function monsterClicked(event) {
         const monsterKey = event.target.parentElement.firstChild.innerText;
         showDetails(monsterKey);
+    }
+
+    /*
+    * Update the monster table to show an error if the combination of clues is impossible
+    */
+    function displayMonsterError() {
+        const elSuspects = document.getElementById("suspects");
+        const tableBody = document.createElement("tbody");
+
+        let tableRow = tableBody.insertRow(-1);
+        const cellError = tableRow.insertCell(0);
+        cellError.classList.add("monstererror")
+        cellError.innerHTML = "No monsters are valid for this combination of clues.";
+
+        elSuspects.innerHTML = "";
+        elSuspects.appendChild(tableBody);
     }
 
     return objMonsterCodex;
