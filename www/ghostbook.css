@@ -1,5 +1,5 @@
 body {
-    margin: 10px;
+    margin: 0px;
 }
 
 #versioninfo {
@@ -42,6 +42,7 @@ header {
     "suspects"
     "details"
     "infos";
+    border-radius: 0px;
 }
 
 @media only screen and (min-width: 900px)  {
@@ -53,5 +54,10 @@ header {
         "clues suspects"
         "details suspects"
         "infos infos";
+        border-radius: 5px;
+    }
+
+    body {
+        margin: 10px;
     }
 }

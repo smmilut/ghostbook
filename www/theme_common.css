@@ -1,8 +1,4 @@
 /****  General  ****/
-body {
-  margin: 10px;
-}
-
 body, button, input, select, option {
   font-family: Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", sans-serif;
   font-size: 100%;
@@ -47,7 +43,6 @@ tbody tr:hover {
   color: #444;
   grid-gap: 10px;
   padding: 10px;
-  border-radius: 5px;
 }
 
 .box {
