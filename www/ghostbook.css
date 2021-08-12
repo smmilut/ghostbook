@@ -11,6 +11,34 @@ body {
     display: none;
 }
 
+.clicktouncollapse {
+    font-style: italic;
+    color: #aaa;
+    cursor:pointer;
+}
+
+.clicktouncollapse::before {
+    content: "\229E";  /* squared plus &#x229E */
+    font-style: normal;
+    font-size: 50%;
+    padding-right: 10px;
+    vertical-align: middle;
+    color: #aaa;
+}
+
+.clicktocollapse {
+    font-style: normal;
+    cursor:pointer;
+}
+
+.clicktocollapse::before {
+    content: "\229F ";  /* squared minus &#8863 or &#x229F */
+    font-style: normal;
+    font-size: 50%;
+    padding-right: 10px;
+    vertical-align: middle;
+    color: #aaa;
+}
 
 /* grid layout assignment */
 header {

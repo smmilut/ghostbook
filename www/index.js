@@ -11,10 +11,22 @@ const collapseSystem = (function build_collapseSystem() {
         const isCollapsed = elCollapsable.classList.contains("collapsed");
         // toggle collapsed state
         if (isCollapsed) {
-            elCollapsable.classList.remove("collapsed");
+            uncollapse(elCollapsable, elClickCollapse);
         } else {
-            elCollapsable.classList.add("collapsed");
+            collapse(elCollapsable, elClickCollapse);
         }
+    }
+
+    function collapse(elCollapsable, elClickCollapse) {
+        elCollapsable.classList.add("collapsed");
+        elClickCollapse.classList.add("clicktouncollapse");
+        elClickCollapse.classList.remove("clicktocollapse");
+    }
+
+    function uncollapse(elCollapsable, elClickCollapse) {
+        elCollapsable.classList.remove("collapsed");
+        elClickCollapse.classList.add("clicktocollapse");
+        elClickCollapse.classList.remove("clicktouncollapse");
     }
 
     /*
@@ -26,7 +38,7 @@ const collapseSystem = (function build_collapseSystem() {
             const elClickCollapse = allClickCollapse[index];
             elClickCollapse.addEventListener("click", collapseClicked, false);
         }
-    }
+    };
 
     return objThis;
 })();
