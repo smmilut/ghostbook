@@ -2,6 +2,7 @@
     "game_version": "2019.4.28.1278358",
     "monsters": [
         {
+            "key": "banshee",
             "name": "Banshee",
             "details": "A Banshee is a natural hunter and will attack anything. It has been known to stalk its prey one at a time until making its kill. <h3>Unique Strengths:</h3> A Banshee will only target one person at a time. <h3>Weaknesses:</h3> Banshees fear the <strong>Crucifix</strong> and will be less aggressive when near one.",
             "clues": [
@@ -11,6 +12,7 @@
             ]
         },
         {
+            "key": "demon",
             "name": "Demon",
             "details": "A Demon is one of the worst Ghosts you can encounter. It has been known to attack without a reason. <h3>Unique Strengths:</h3> Demons will attack more often than any other Ghost. <h3>Weaknesses:</h3> Asking a Demon successful questions on the <strong>Ouija Board</strong> won't lower the user's sanity.",
             "clues": [
@@ -20,6 +22,7 @@
             ]
         },
         {
+            "key": "hantu",
             "name": "Hantu",
             "details": "A rare ghost that can be found in hot climates. They are known to attack more often in cold weather. <h3>Unique Strengths:</h3> Moves faster in colder areas. <h3>Weaknesses:</h3> Moves slower in <strong>warmer</strong> areas.",
             "clues": [
@@ -29,6 +32,7 @@
             ]
         },
         {
+            "key": "jinn",
             "name": "Jinn",
             "details": "A Jinn is a territorial ghost that will attack when threatened. It has also been known to be able to travel at significant speed. <h3>Unique Strengths:</h3> A Jinn will travel at a faster speed if its victim is far away. <h3>Weaknesses:</h3> Turning off the locations <strong>power source</strong> will prevent the Jinn from using its ability. ",
             "clues": [
@@ -38,6 +42,7 @@
             ]
         },
         {
+            "key": "mare",
             "name": "Mare",
             "details": "A Mare is the source of all nightmares, making it most powerful in the dark. <h3>Unique Strengths:</h3> A Mare will have an increased chance to attack in the dark. <h3>Weaknesses:</h3> Turning the <strong>lights on</strong> around the Mare will lower its chance to attack. ",
             "clues": [
@@ -47,6 +52,7 @@
             ]
         },
         {
+            "key": "oni",
             "name": "Oni",
             "details": "Oni's are a cousin to the Demon and possess extreme strength. There have been rumours that they become more active around their prey. <h3>Unique Strengths:</h3> Oni's are more active when people are nearby and have been seen moving objects at great speed. <h3>Weaknesses:</h3> <strong>Being more active</strong> make the Oni easier to find and identify",
             "clues": [
@@ -56,6 +62,7 @@
             ]
         },
         {
+            "key": "phantom",
             "name": "Phantom",
             "details": "A Phantom is a ghost that can possess the living, most commonly summoned by a Ouija Board. It also induces fear into those around it. <h3>Unique Strengths:</h3> Looking at a Phantom will considerably <strong>drop your sanity</strong>. <h3>Weaknesses:</h3> Taking a <strong>photo</strong> of the Phantom will make it temporarily disappear.",
             "clues": [
@@ -65,6 +72,7 @@
             ]
         },
         {
+            "key": "poltergeist",
             "name": "Poltergeist",
             "details": "One of the most famous Ghosts, a Poltergeist, also known as a noisy ghost can manipulate objects around it to spread fear into its victims. <h3>Unique Strengths:</h3> A Poltergeist can throw huge amounts of <strong>objects</strong> at once. <h3>Weaknesses:</h3> A Poltergeist is almost ineffective in an empty room. ",
             "clues": [
@@ -74,6 +82,7 @@
             ]
         },
         {
+            "key": "revenant",
             "name": "Revenant",
             "details": "A Revenant is a slow but violent ghost that will attack indiscriminately. It has been rumoured to travel at a significantly high speed when hunting. <h3>Unique Strengths:</h3> A Revenant will travel at a significantly faster speed when hunting a victim. <h3>Weaknesses:</h3> <strong>Hiding</strong> from the Revenant will cause it to move very slowly.",
             "clues": [
@@ -83,6 +92,7 @@
             ]
         },
         {
+            "key": "shade",
             "name": "Shade",
             "details": "A Shade is known to be a Shy Ghost. There is evidence that a Shade will stop all paranormal activity if there are multiple people nearby. <h3>Unique Strengths:</h3> Being shy means the Ghost will be harder to find. <h3>Weaknesses:</h3> The Ghost will not enter hunting mode if there is <strong>multiple people</strong> nearby.",
             "clues": [
@@ -92,6 +102,7 @@
             ]
         },
         {
+            "key": "spirit",
             "name": "Spirit",
             "details": "A Spirit is the most common Ghost you will come across however it is still very powerful and dangerous. They are usually discovered at one of their hunting grounds after an unexplained death. <h3>Unique Strengths:</h3> Nothing. <h3>Weaknesses:</h3> Using <strong>Smudge Sticks</strong> on a spirit will stop it attacking for a long period of time. ",
             "clues": [
@@ -101,6 +112,7 @@
             ]
         },
         {
+            "key": "wraith",
             "name": "Wraith",
             "details": "A wraith is one of the most dangerous ghosts you will find. It is also the only known Ghost that has the ability of flight and has sometimes been known to travel through walls. <h3>Unique Strengths:</h3> Wraiths almost never touch the ground meaning it can't be tracked by footsteps. <h3>Weaknesses:</h3> Wraiths have a toxic reaction to <strong>Salt</strong>.",
             "clues": [
@@ -110,6 +122,7 @@
             ]
         },
         {
+            "key": "yokai",
             "name": "Yokai",
             "details": "A common type of ghost that is attracted to human voices. They can usually be found haunting family homes. <h3>Unique Strengths:</h3> Talking near a Yokai will anger it and cause it to attack more often. <h3>Weaknesses:</h3> While hunting, it can only hear <strong>voices close to it</strong>.",
             "clues": [
@@ -119,6 +132,7 @@
             ]
         },
         {
+            "key": "yurei",
             "name": "Yurei",
             "details": "A Yurei is a Ghost that has returned to the physical world, usually for the purpose of revenge or hatred. <h3>Unique Strengths:</h3> Yurei's have been known to have a stronger effect on people <strong>sanity</strong>. <h3>Weaknesses:</h3> Smudging the Yurei's room will cause it to not wander around the location for a long time.",
             "clues": [

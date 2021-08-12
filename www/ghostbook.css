@@ -33,6 +33,11 @@ h2 {
     color: #fff;
 }
 
+#suspects {
+    cursor: pointer;
+}
+
+/* collapse system */
 .collapsed {
     display: none;
 }

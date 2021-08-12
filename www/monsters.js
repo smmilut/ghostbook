@@ -25,10 +25,10 @@ export const MonsterCodex = (function buildMonsterCodex() {
     /*
     * Display the details about that monster
     */
-    objMonsterCodex.showDetails = function Codex_showDetails(monsterName) {
+    objMonsterCodex.showDetails = function Codex_showDetails(monsterKey) {
         const elDetails = document.getElementById("details");
         json_obj.monsters.forEach(function findMonsterNamed(monster) {
-            if (monster.name == monsterName) {
+            if (monster.key == monsterKey) {
                 const nameHeader = document.createElement("h2");
                 nameHeader.innerText = monster.name + " :";
                 const detailsDiv = document.createElement("div");
@@ -114,11 +114,14 @@ export const MonsterCodex = (function buildMonsterCodex() {
 
         validMonsters.forEach(function displayMonsterRow(monster) {
             let tableRow = tableBody.insertRow(-1);
-            const cellName = tableRow.insertCell(0);
+            const cellKey = tableRow.insertCell(0);
+            cellKey.innerHTML = monster.key;
+            cellKey.style.display = "none";
+            const cellName = tableRow.insertCell(1);
             cellName.innerHTML = monster.name;
             tableRow.addEventListener("click", monsterClicked, false);
 
-            let columnIndex = 1;
+            let columnIndex = 2;
             for (let clueIndex = 0; clueIndex < monster.clues.length; clueIndex++) {
                 const clueKey = monster.clues[clueIndex];
                 if (showAll || !selectedClues.includes(clueKey)) {
@@ -150,8 +153,8 @@ export const MonsterCodex = (function buildMonsterCodex() {
     * User clicked a monster to get its details
     */
     function monsterClicked(event) {
-        const monsterName = event.target.parentElement.firstChild.innerText;
-        objMonsterCodex.showDetails(monsterName);
+        const monsterKey = event.target.parentElement.firstChild.innerText;
+        objMonsterCodex.showDetails(monsterKey);
     }
 
     return objMonsterCodex;
