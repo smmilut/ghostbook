@@ -60,3 +60,32 @@ export const Http = (function build_HttpUtils() {
     };
 })();
 
+/*
+* Get object values based on selected Locale
+*/
+export const Locale = (function build_Locale() {
+    // this object
+    const objLocale = {};
+    // default fallback locale
+    const defaultLocale = "en";
+    // array of user preferred locales, in order
+    let userPreferredLocales = navigator.languages;
+    /*
+    * Get object value based on selected Locale
+    */
+    objLocale.get = function objLocale_get(object, propertyName) {
+        for (let localeIndex = 0; localeIndex < userPreferredLocales.length; localeIndex++) {
+            const userPreferredLocale = userPreferredLocales[localeIndex];
+            const userPreferredLocaleShort = userPreferredLocale.split("-", 1)[0]
+            const localizedPropertyName = propertyName + "_" + userPreferredLocaleShort;
+            const localizedPropertyValue = object[localizedPropertyName];
+            if (localizedPropertyValue != undefined) {
+                return localizedPropertyValue;
+            }
+        }
+        const defaultPropertyName = propertyName + "_" + defaultLocale;
+        const defaultPropertyValue = object[defaultPropertyName];
+    };
+
+    return objLocale;
+})();

@@ -1,5 +1,10 @@
 import * as utils from "./utils.js";
 
+
+
+/*
+* All Monster data and its display on the page
+*/
 export const MonsterCodex = (function buildMonsterCodex() {
     // the object we are building
     const objMonsterCodex = {};
@@ -46,11 +51,11 @@ export const MonsterCodex = (function buildMonsterCodex() {
                 elDetails.innerHTML = "";
                 // Add monster name as title
                 const nameHeader = document.createElement("h2");
-                nameHeader.innerText = monster.name + " :";
+                nameHeader.innerText = utils.Locale.get(monster, "name") + " :";
                 elDetails.append(nameHeader);
                 // Add details from database
                 const detailsDiv = document.createElement("div");
-                detailsDiv.innerHTML = monster.details;
+                detailsDiv.innerHTML = utils.Locale.get(monster, "details");
                 elDetails.append(detailsDiv);
             }
         });
@@ -70,7 +75,7 @@ export const MonsterCodex = (function buildMonsterCodex() {
     function initCluesHtml() {
         const elClues = document.getElementById("clues");
         json_obj.clues.forEach(function initClue(clue) {
-            let elClue = new Option(clue.name, clue.key, false, false);
+            let elClue = new Option(utils.Locale.get(clue, "name"), clue.key, false, false);
             elClues.options.add(elClue);
         });
         elClues.addEventListener("change", clueSelectionChanged, false);
@@ -173,7 +178,7 @@ export const MonsterCodex = (function buildMonsterCodex() {
             // First invisible cell displays the monster key
             monsterTableBuilder.createCellKey(monster.key);
             // Second cell displays the monster name
-            monsterTableBuilder.createCellName(monster.name);
+            monsterTableBuilder.createCellName(utils.Locale.get(monster, "name"));
             if (validMonsters.length == 1) {
                 monsterTableBuilder.markCellFound();
                 showDetails(monster.key);
@@ -201,7 +206,7 @@ export const MonsterCodex = (function buildMonsterCodex() {
         for (let clueIndex = 0; clueIndex < json_obj.clues.length; clueIndex++) {
             const clue = json_obj.clues[clueIndex];
             if (clueKey == clue.key) {
-                return clue.name;
+                return utils.Locale.get(clue, "name");
             }
         }
     }
