@@ -11,6 +11,8 @@ export const MonsterCodex = (function buildMonsterCodex() {
     // Monster codex data retrieved from the JSON file
     let json_obj = {};
 
+    const Locale = utils.Locale(reload);
+
     /*
     * Get monster database and update monster and clue data on the page
     */
@@ -20,10 +22,15 @@ export const MonsterCodex = (function buildMonsterCodex() {
         })
             .then(function gotMonsters(data) {
                 updateLocalDatabase(data.responseText);
-                updateVersionInfo()
-                updateVisibleMonsters();
-                initCluesHtml();
+                reload();
             });
+    };
+
+
+    function reload() {
+        updateVersionInfo()
+        updateVisibleMonsters();
+        initCluesHtml();
     };
 
     /*
@@ -51,11 +58,11 @@ export const MonsterCodex = (function buildMonsterCodex() {
                 elDetails.innerHTML = "";
                 // Add monster name as title
                 const nameHeader = document.createElement("h2");
-                nameHeader.innerText = utils.Locale.get(monster, "name") + " :";
+                nameHeader.innerText = Locale.get(monster, "name") + " :";
                 elDetails.append(nameHeader);
                 // Add details from database
                 const detailsDiv = document.createElement("div");
-                detailsDiv.innerHTML = utils.Locale.get(monster, "details");
+                detailsDiv.innerHTML = Locale.get(monster, "details");
                 elDetails.append(detailsDiv);
             }
         });
@@ -74,8 +81,9 @@ export const MonsterCodex = (function buildMonsterCodex() {
     */
     function initCluesHtml() {
         const elClues = document.getElementById("clues");
+        elClues.innerHTML = "";
         json_obj.clues.forEach(function initClue(clue) {
-            let elClue = new Option(utils.Locale.get(clue, "name"), clue.key, false, false);
+            let elClue = new Option(Locale.get(clue, "name"), clue.key, false, false);
             elClues.options.add(elClue);
         });
         elClues.addEventListener("change", clueSelectionChanged, false);
@@ -178,7 +186,7 @@ export const MonsterCodex = (function buildMonsterCodex() {
             // First invisible cell displays the monster key
             monsterTableBuilder.createCellKey(monster.key);
             // Second cell displays the monster name
-            monsterTableBuilder.createCellName(utils.Locale.get(monster, "name"));
+            monsterTableBuilder.createCellName(Locale.get(monster, "name"));
             if (validMonsters.length == 1) {
                 monsterTableBuilder.markCellFound();
                 showDetails(monster.key);
@@ -206,7 +214,7 @@ export const MonsterCodex = (function buildMonsterCodex() {
         for (let clueIndex = 0; clueIndex < json_obj.clues.length; clueIndex++) {
             const clue = json_obj.clues[clueIndex];
             if (clueKey == clue.key) {
-                return utils.Locale.get(clue, "name");
+                return Locale.get(clue, "name");
             }
         }
     }

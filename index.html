@@ -53,15 +53,21 @@
                     </ul>
                     </p>
                     <h3>Language :</h3>
-                    <p>Language preferrences are read from browser preferrences</p>
-                    <p>Additionally, you can set a preferred list of languages from the URL parameter "<code>lang</code>", and they will take
+                    <select id="language">
+                        <option value="none" selected>(none)</option>
+                        <option value="en">en</option>
+                        <option value="fr">fr</option>
+                    </select>
+                    <p>Additionally, you can set a prefered list of languages from the URL parameter "<code>lang</code>", and they will take
                         precedence.</p>
                     <p>Examples :
                     <ul>
-                        <li><code>https://smmilut.github.io/ghostbook?lang=fr</code> will set language <code>fr</code> (French) as preferred language. For any given string, if this language is unvailable then your browser preferrences will be used instead.</li>
-                        <li><code>https://smmilut.github.io/ghostbook?lang=it,fr</code> will set language <code>it</code> as preferred language, and <code>fr</code> as secondary.</li>
+                        <li><code>https://smmilut.github.io/ghostbook/?lang=fr</code> will set language <code>fr</code> (French) as prefered language. For any given text, if this language is unvailable then your browser preferences will be used instead.</li>
+                        <li><code>https://smmilut.github.io/ghostbook/?lang=it,fr</code> will set language <code>it</code> as prefered language, and <code>fr</code> as secondary.</li>
                     </ul>
                     </p>
+                    <p>In any case, a default list of prefered languages is read from browser preferences.</p>
+                    <p>If no text is available for those languages, fallback is set to English <code>en</code>.</p>
                 </div>
                 <div>
                     <h2>Other info :</h2>

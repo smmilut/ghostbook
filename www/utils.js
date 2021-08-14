@@ -63,7 +63,7 @@ export const Http = (function build_HttpUtils() {
 /*
 * Get object values based on selected Locale
 */
-export const Locale = (function build_Locale() {
+export const Locale = function build_Locale(notifyLocaleChanged) {
     // this object
     const objLocale = {};
 
@@ -86,9 +86,31 @@ export const Locale = (function build_Locale() {
                 return userPreferredLocales;
             }
         }
-        return browserLocales;
+        return [...browserLocales];
     })();
-    console.log(userPreferredLocales);
+
+    // locale manually selected in the UI
+    let selectedLocale = null;
+
+    (function init_LocaleSelector() {
+        const elSelect = document.getElementById("language");
+        elSelect.addEventListener("change", localeSelectionChanged);
+    })();
+
+    function localeSelectionChanged(event) {
+        const option = event.target.value;
+        if (selectedLocale) {
+            // remove previous selection
+            userPreferredLocales.shift();
+        }
+        if (option == "none") {
+            selectedLocale = null;
+        } else {
+            selectedLocale = option;
+            userPreferredLocales.unshift(selectedLocale);
+        }
+        notifyLocaleChanged();
+    }
 
     /*
     * Get object value based on selected Locale
@@ -108,4 +130,4 @@ export const Locale = (function build_Locale() {
     };
 
     return objLocale;
-})();
+};
