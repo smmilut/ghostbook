@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    
+
     <div id="wrapper">
         <header class="box">
             <h1 class="clickcollapse clicktouncollapse">Ghostbook</h1>
@@ -52,13 +52,24 @@
                         <li>The only displayed clues are those that are not a selected clue.</li>
                     </ul>
                     </p>
+                    <h3>Language :</h3>
+                    <p>Language preferrences are read from browser preferrences</p>
+                    <p>Additionally, you can set a preferred list of languages from the URL parameter "<code>lang</code>", and they will take
+                        precedence.</p>
+                    <p>Examples :
+                    <ul>
+                        <li><code>https://smmilut.github.io/ghostbook?lang=fr</code> will set language <code>fr</code> (French) as preferred language. For any given string, if this language is unvailable then your browser preferrences will be used instead.</li>
+                        <li><code>https://smmilut.github.io/ghostbook?lang=it,fr</code> will set language <code>it</code> as preferred language, and <code>fr</code> as secondary.</li>
+                    </ul>
+                    </p>
                 </div>
                 <div>
                     <h2>Other info :</h2>
                     <p>Game version : <span id="versioninfo"></span></p>
                     <p>See Github for : <a href="https://github.com/smmilut/ghostbook" target="_blank">code</a>, <a
-                            href="https://github.com/smmilut/ghostbook/blob/main/LICENSE" target="_blank">license</a>, <a
-                            href="https://github.com/smmilut/ghostbook/blob/main/README.md" target="_blank">privacy</a>.</p>
+                            href="https://github.com/smmilut/ghostbook/blob/main/LICENSE" target="_blank">license</a>,
+                        <a href="https://github.com/smmilut/ghostbook/blob/main/README.md" target="_blank">privacy</a>.
+                    </p>
                 </div>
             </div>
         </footer>

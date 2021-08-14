@@ -66,10 +66,30 @@ export const Http = (function build_HttpUtils() {
 export const Locale = (function build_Locale() {
     // this object
     const objLocale = {};
+
     // default fallback locale
     const defaultLocale = "en";
+    // key used to set locales from the url parameters
+    const urlParameterKey = "lang";
+
     // array of user preferred locales, in order
-    let userPreferredLocales = navigator.languages;
+    let userPreferredLocales = (function init_Locale() {
+        // locales configured in browser, in order
+        const browserLocales = navigator.languages;
+        // looking for a user choice in the url
+        const urlParameters = new URLSearchParams(window.location.search);
+        if (urlParameters) {
+            const urlParameterLocaleString = urlParameters.get(urlParameterKey);
+            if (urlParameterLocaleString != null) {
+                let userPreferredLocales = urlParameterLocaleString.split(",");
+                userPreferredLocales.push(...browserLocales);
+                return userPreferredLocales;
+            }
+        }
+        return browserLocales;
+    })();
+    console.log(userPreferredLocales);
+
     /*
     * Get object value based on selected Locale
     */
