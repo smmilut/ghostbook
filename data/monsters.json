@@ -30,7 +30,7 @@
             "name_en": "Hantu",
             "details_en": "A rare ghost that can be found in hot climates. They are known to attack more often in cold weather. <h3>Unique Strengths:</h3> Moves faster in colder areas. <h3>Weaknesses:</h3> Moves slower in <strong>warmer</strong> areas.",
             "name_fr": "Hantu",
-            "details_fr": "(pas trouvé la vraie description complète sur un site en Français) A rare ghost that can be found in hot climates. They are known to attack more often in cold weather. <h3>Unique Strengths:</h3> Moves faster in colder areas. <h3>Weaknesses:</h3> Moves slower in <strong>warmer</strong> areas.<h3>Autres infos:</h3>Le Hantu est un type de fantôme qui, pendant une chasse, va baser sa vitesse sur la température des pièces qu’il traverse. Cela signifie que le Hantu est très dépendant de l’état du disjoncteur du lieu d’enquête. Si le courant est activé, le Hantu sera plus lent, au vue des températures qui seront élevées. Cela signifie également qu’il sera plus rapide dans les zones froides.",
+            "details_fr": "Un Hantu est un fantôme rare présent sous des climats chauds. Ils sont connus pour attaquer durant les périodes froides.<h3>Forces uniques :</h3> Les basses températures permettent au Hantu de bouger plus rapidement.<h3>Faiblesses :</h3> Un Hantu bougera plus lentement dans des zones plus <strong>chaudes</strong>.<h3>Autres infos:</h3>Le Hantu est un type de fantôme qui, pendant une chasse, va baser sa vitesse sur la température des pièces qu’il traverse. Cela signifie que le Hantu est très dépendant de l’état du disjoncteur du lieu d’enquête. Si le courant est activé, le Hantu sera plus lent, au vue des températures qui seront élevées. Cela signifie également qu’il sera plus rapide dans les zones froides.",
             "clues": [
                 "fingerprints",
                 "orbs",
@@ -66,7 +66,7 @@
             "name_en": "Oni",
             "details_en": "Oni's are a cousin to the Demon and possess extreme strength. There have been rumours that they become more active around their prey. <h3>Unique Strengths:</h3> Oni's are more active when people are nearby and have been seen moving objects at great speed. <h3>Weaknesses:</h3> <strong>Being more active</strong> make the Oni easier to find and identify",
             "name_fr": "Oni",
-            "details_fr": "Les Oni sont des cousins des démons et possèdent une force phénoménale. Il y a eu des rumeurs selon lesquelles ils deviennent plus actifs autour de leur proie.<h3>Forces uniques:</h3> les Oni sont plus actifs lorsque des personnes sont à proximité et ont vu des objets en mouvement à grande vitesse.<h3>Faiblesses:</h3> Etre <strong>plus actif</strong> rendra l’Oni plus facile à trouver et à identifier.",
+            "details_fr": "Les Oni sont des cousins des démons et possèdent une force phénoménale. Il y a eu des rumeurs selon lesquelles ils deviennent plus actifs autour de leur proie.<h3>Forces uniques:</h3> Les Oni sont plus actifs lorsque des personnes sont à proximité et ont vu des objets en mouvement à grande vitesse.<h3>Faiblesses:</h3> Etre <strong>plus actif</strong> rendra l’Oni plus facile à trouver et à identifier.",
             "clues": [
                 "emf5",
                 "writing",
@@ -90,7 +90,7 @@
             "name_en": "Poltergeist",
             "details_en": "One of the most famous Ghosts, a Poltergeist, also known as a noisy ghost can manipulate objects around it to spread fear into its victims. <h3>Unique Strengths:</h3> A Poltergeist can throw huge amounts of <strong>objects</strong> at once. <h3>Weaknesses:</h3> A Poltergeist is almost ineffective in an empty room. ",
             "name_fr": "Poltergeist",
-            "details_fr": "L’un des fantômes les plus célèbres : le Poltergeist. Egalement connu sous le nom d’esprit frappeur, il peut manipuler les objets qui l’entourent pour semer la peur chez ses victimes.<h3>Forces uniques:</h3> un Poltergeist peut lancer d’énormes quantités <strong>d’objets</strong> à la fois.<h3>Faiblesses:</h3> Un Poltergeist est presque inefficace dans une pièce vide.",
+            "details_fr": "L’un des fantômes les plus célèbres : le Poltergeist. Egalement connu sous le nom d’esprit frappeur, il peut manipuler les objets qui l’entourent pour semer la peur chez ses victimes.<h3>Forces uniques:</h3> Un Poltergeist peut lancer d’énormes quantités <strong>d’objets</strong> à la fois.<h3>Faiblesses:</h3> Un Poltergeist est presque inefficace dans une pièce vide.",
             "clues": [
                 "fingerprints",
                 "orbs",
@@ -102,7 +102,7 @@
             "name_en": "Revenant",
             "details_en": "A Revenant is a slow but violent ghost that will attack indiscriminately. It has been rumoured to travel at a significantly high speed when hunting. <h3>Unique Strengths:</h3> A Revenant will travel at a significantly faster speed when hunting a victim. <h3>Weaknesses:</h3> <strong>Hiding</strong> from the Revenant will cause it to move very slowly.",
             "name_fr": "Revenant",
-            "details_fr": "Le Revenant est un fantôme lent mais violent qui attaquera sans discernement. On dit qu’il se déplace à une vitesse considérablement élevée lorsqu’il chasse.<h3>Forces uniques:</h3> un Revenant voyagera à une sitesse beaucoup plus rapide lorsqu’il chassera une victime.<h3>Faiblesses:</h3> <strong>Se cacher</strong> du Revenant le fera bouger très lentement.",
+            "details_fr": "Le Revenant est un fantôme lent mais violent qui attaquera sans discernement. On dit qu’il se déplace à une vitesse considérablement élevée lorsqu’il chasse.<h3>Forces uniques:</h3> Un Revenant voyagera à une sitesse beaucoup plus rapide lorsqu’il chassera une victime.<h3>Faiblesses:</h3> <strong>Se cacher</strong> du Revenant le fera bouger très lentement.",
             "clues": [
                 "emf5",
                 "fingerprints",
@@ -114,7 +114,7 @@
             "name_en": "Shade",
             "details_en": "A Shade is known to be a Shy Ghost. There is evidence that a Shade will stop all paranormal activity if there are multiple people nearby. <h3>Unique Strengths:</h3> Being shy means the Ghost will be harder to find. <h3>Weaknesses:</h3> The Ghost will not enter hunting mode if there is <strong>multiple people</strong> nearby.",
             "name_fr": "Ombre",
-            "details_fr": "Une Ombre est connue pour être une fantôme timide. Il est prouvé qu’une Ombre arrêtera toute activité paranormale s’il y a plusieurs personnes à proximité.<h3>Forces uniques:</h3> être timide signifie que le fantôme sera plus difficile à trouver.<h3>Faiblesses:</h3> Le fantôme n’entrera pas en mode chasse s’il y a <strong>plusieurs personnes</strong> à proximité.",
+            "details_fr": "Une Ombre est connue pour être une fantôme timide. Il est prouvé qu’une Ombre arrêtera toute activité paranormale s’il y a plusieurs personnes à proximité.<h3>Forces uniques:</h3> Être timide signifie que le fantôme sera plus difficile à trouver.<h3>Faiblesses:</h3> Le fantôme n’entrera pas en mode chasse s’il y a <strong>plusieurs personnes</strong> à proximité.",
             "clues": [
                 "emf5",
                 "orbs",
@@ -138,7 +138,7 @@
             "name_en": "Wraith",
             "details_en": "A wraith is one of the most dangerous ghosts you will find. It is also the only known Ghost that has the ability of flight and has sometimes been known to travel through walls. <h3>Unique Strengths:</h3> Wraiths almost never touch the ground meaning it can't be tracked by footsteps. <h3>Weaknesses:</h3> Wraiths have a toxic reaction to <strong>Salt</strong>.",
             "name_fr": "Spectre",
-            "details_fr": "Un spectre est l’un des fantômes les plus dangereux que vous puissiez trouver. C’est également le seul fantôme connu qui a la capacité de voler et qui est parfois connu pour traverser les murs.<h3>Forces uniques:</h3> les spectres ne touchent presque jamais le sol, ce qui signifie qu’ils ne peuvent pas être suivis par des pas.<h3>Faiblesses:</h3> Les spectres ont une réaction toxique au <strong>sel</strong>.",
+            "details_fr": "Un spectre est l’un des fantômes les plus dangereux que vous puissiez trouver. C’est également le seul fantôme connu qui a la capacité de voler et qui est parfois connu pour traverser les murs.<h3>Forces uniques:</h3> Les spectres ne touchent presque jamais le sol, ce qui signifie qu’ils ne peuvent pas être suivis par des pas.<h3>Faiblesses:</h3> Les spectres ont une réaction toxique au <strong>sel</strong>.",
             "clues": [
                 "fingerprints",
                 "freezing",
@@ -150,7 +150,7 @@
             "name_en": "Yokai",
             "details_en": "A common type of ghost that is attracted to human voices. They can usually be found haunting family homes. <h3>Unique Strengths:</h3> Talking near a Yokai will anger it and cause it to attack more often. <h3>Weaknesses:</h3> While hunting, it can only hear <strong>voices close to it</strong>.",
             "name_fr": "Yokai",
-            "details_fr": "(pas trouvé la vraie description complète sur un site en Français) A common type of ghost that is attracted to human voices. They can usually be found haunting family homes. <h3>Unique Strengths:</h3> Talking near a Yokai will anger it and cause it to attack more often. <h3>Weaknesses:</h3> While hunting, it can only hear <strong>voices close to it</strong>.<h3>Autres infos:</h3>Le Yokai est une entité qui a un comportement très particulier, dans lequel il devient plus agressif lorsque des joueurs parlent à proximité. Cela lui permet de commencer une chasse même lorsque les joueurs possèdent encore beaucoup de santé mentale. Bien que le Yokai soit très sensible aux voix, lorsqu’il chasse, le rayon dans lequel il peut entendre les joueurs est beaucoup plus petit que celui des autres types de fantômes.",
+            "details_fr": "Un Yokai est un type courant de fantôme attiré par les voix humaines. Ils sont généralement présents dans les demeures familiales.<h3>Forces uniques :</h3> Parler près d'un Yokai l'énervera et il risquera d'attaquer.<h3>Faiblesses :</h3> Lors d'une chasse, le Yokai ne peut entendre que les <strong>voix proches</strong> de lui.<h3>Autres infos:</h3>Le Yokai est une entité qui a un comportement très particulier, dans lequel il devient plus agressif lorsque des joueurs parlent à proximité. Cela lui permet de commencer une chasse même lorsque les joueurs possèdent encore beaucoup de santé mentale. Bien que le Yokai soit très sensible aux voix, lorsqu’il chasse, le rayon dans lequel il peut entendre les joueurs est beaucoup plus petit que celui des autres types de fantômes.",
             "clues": [
                 "spiritbox",
                 "orbs",
