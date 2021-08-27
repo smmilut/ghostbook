@@ -1,5 +1,5 @@
 {
-    "game_version": "2019.4.28.1278358",
+    "game_version": "2021-08-26",
     "monsters": [
         {
             "key": "banshee",
@@ -8,9 +8,9 @@
             "name_fr": "Banshee",
             "details_fr": "La Banshee est une chasseuse naturelle et attaquera n’importe quoi. Elle est connu pour traquer une personne à la fois jusqu’à ce qu’elle soit tuée.<h3>Forces uniques:</h3> Une Banshee ne ciblera qu’une personne à la fois.<h3>Faiblesses:</h3> Les Banshees craignent le Crucifix et seront moins agressives à proximité d’un <strong>crucifix</strong>.",
             "clues": [
-                "emf5",
+                "orbs",
                 "fingerprints",
-                "freezing"
+                "dots"
             ]
         },
         {
@@ -22,7 +22,19 @@
             "clues": [
                 "freezing",
                 "writing",
-                "spiritbox"
+                "fingerprints"
+            ]
+        },
+        {
+            "key": "goryo",
+            "name_en": "Goryo",
+            "details_en": "Using a <strong>video camera</strong> is the only way to view a Goryo, when it passes through a DOTS projector.<h3>Unique Strengths:</h3>A Goryo will usually only show itself on camera is there are <strong>no people nearby</strong>.<h3>Weaknesses:</h3>They are rarely seen far from their place of death.",
+            "name_fr": "Goryo",
+            "details_fr": "Le seul moyen de voir un Goryo est d'observer une zone couverte par un projecteur DOTS via une <strong>camera</strong>.<h3>Forces uniques:</h3>Un Goryo ne se montrera généralement à la caméra que s'il n'y a <strong>personne à proximité</strong>.<h3>Faiblesses:</h3>On les voit rarement loin du lieu de leur décès.",
+            "clues": [
+                "emf5",
+                "fingerprints",
+                "dots"
             ]
         },
         {
@@ -34,7 +46,7 @@
             "clues": [
                 "fingerprints",
                 "orbs",
-                "writing"
+                "freezing"
             ]
         },
         {
@@ -45,8 +57,8 @@
             "details_fr": "Le Djinn est un fantôme territorial qui attaquera lorsqu’il est menacé. Il est également connu pour pouvoir se déplacer à une vitesse significative.<h3>Forces uniques:</h3> Un Djinn voyagera à une vitesse plus rapide si sa victime est loin.<h3>Faiblesses:</h3> Couper <strong>le courant</strong> empêchera le Djinn d’utiliser sa capacité.",
             "clues": [
                 "emf5",
-                "orbs",
-                "spiritbox"
+                "fingerprints",
+                "freezing"
             ]
         },
         {
@@ -56,9 +68,21 @@
             "name_fr": "Cauchemar",
             "details_fr": "Le Cauchemar est la source de tous les mauvais rêves, ce qui le rend plus puissant dans l’obscurité.<h3>Forces uniques:</h3> Un Cauchemar aura une chance accrue d’attaquer dans l’obscurité<h3>Faiblesses:</h3> Allumer les <strong>lumières</strong> autour du Cauchemar réduira ses chances d’attaquer.",
             "clues": [
-                "freezing",
+                "writing",
                 "orbs",
                 "spiritbox"
+            ]
+        },
+        {
+            "key": "myling",
+            "name_en": "Myling",
+            "details_en": "A Myling is a very vocal and active ghost. They are rumoured to be quiet when hunting their prey.<h3>Unique Strengths:</h3>A Myling is known to be <strong>quieter when hunting</strong>.<h3>Weaknesses:</h3>Mylings more frequently make <strong>paranormal sounds</strong>.",
+            "name_fr": "Myling",
+            "details_fr": "Un Myling est un fantôme très actif et bavard. On dit qu'il est <strong>silencieux lorsqu'il chasse</strong> sa proie.<h3>Forces uniques:</h3>Le Myling est connu pour être silencieux lors d'une chasse.<h3>Faiblesses:</h3>Les Mylings émettent plus fréquemment des <strong>sons d'origine paranormale</strong>.",
+            "clues": [
+                "emf5",
+                "fingerprints",
+                "writing"
             ]
         },
         {
@@ -69,8 +93,8 @@
             "details_fr": "Les Oni sont des cousins des démons et possèdent une force phénoménale. Il y a eu des rumeurs selon lesquelles ils deviennent plus actifs autour de leur proie.<h3>Forces uniques:</h3> Les Oni sont plus actifs lorsque des personnes sont à proximité et ont vu des objets en mouvement à grande vitesse.<h3>Faiblesses:</h3> Etre <strong>plus actif</strong> rendra l’Oni plus facile à trouver et à identifier.",
             "clues": [
                 "emf5",
-                "writing",
-                "spiritbox"
+                "freezing",
+                "dots"
             ]
         },
         {
@@ -80,9 +104,9 @@
             "name_fr": "Fantôme",
             "details_fr": "Le Fantôme peut posséder les vivants et est le plus souvent invoqué via une planche Ouija. Il induit également la peur chez ceux qui l’entourent.<h3>Forces uniques:</h3> Regarder un Fantôme diminuera considérablement votre santé mentale.<h3>Faiblesses:</h3> Prendre une <strong>photo</strong> du Fantôme le fera temporairement disparaître.",
             "clues": [
-                "emf5",
-                "freezing",
-                "orbs"
+                "spiritbox",
+                "fingerprints",
+                "dots"
             ]
         },
         {
@@ -93,7 +117,7 @@
             "details_fr": "L’un des fantômes les plus célèbres : le Poltergeist. Egalement connu sous le nom d’esprit frappeur, il peut manipuler les objets qui l’entourent pour semer la peur chez ses victimes.<h3>Forces uniques:</h3> Un Poltergeist peut lancer d’énormes quantités <strong>d’objets</strong> à la fois.<h3>Faiblesses:</h3> Un Poltergeist est presque inefficace dans une pièce vide.",
             "clues": [
                 "fingerprints",
-                "orbs",
+                "writing",
                 "spiritbox"
             ]
         },
@@ -104,8 +128,8 @@
             "name_fr": "Revenant",
             "details_fr": "Le Revenant est un fantôme lent mais violent qui attaquera sans discernement. On dit qu’il se déplace à une vitesse considérablement élevée lorsqu’il chasse.<h3>Forces uniques:</h3> Un Revenant voyagera à une sitesse beaucoup plus rapide lorsqu’il chassera une victime.<h3>Faiblesses:</h3> <strong>Se cacher</strong> du Revenant le fera bouger très lentement.",
             "clues": [
-                "emf5",
-                "fingerprints",
+                "orbs",
+                "freezing",
                 "writing"
             ]
         },
@@ -117,7 +141,7 @@
             "details_fr": "Une Ombre est connue pour être une fantôme timide. Il est prouvé qu’une Ombre arrêtera toute activité paranormale s’il y a plusieurs personnes à proximité.<h3>Forces uniques:</h3> Être timide signifie que le fantôme sera plus difficile à trouver.<h3>Faiblesses:</h3> Le fantôme n’entrera pas en mode chasse s’il y a <strong>plusieurs personnes</strong> à proximité.",
             "clues": [
                 "emf5",
-                "orbs",
+                "freezing",
                 "writing"
             ]
         },
@@ -128,7 +152,7 @@
             "name_fr": "Esprit",
             "details_fr": "L’Esprit est le fantôme le plus courant que vous rencontrerez, mais il est très puissant et dangereux. Ils sont généralement découverts sur l’in de leurs terrains de chasse après une mort inexpliquée.<h3>Forces uniques:</h3> Rien <h3>Faiblesses:</h3> L’utilisation de <strong>bâton d’encens</strong> sur un esprit l’empêchera d’attaquer pendant une longue période.",
             "clues": [
-                "fingerprints",
+                "emf5",
                 "writing",
                 "spiritbox"
             ]
@@ -140,21 +164,21 @@
             "name_fr": "Spectre",
             "details_fr": "Un spectre est l’un des fantômes les plus dangereux que vous puissiez trouver. C’est également le seul fantôme connu qui a la capacité de voler et qui est parfois connu pour traverser les murs.<h3>Forces uniques:</h3> Les spectres ne touchent presque jamais le sol, ce qui signifie qu’ils ne peuvent pas être suivis par des pas.<h3>Faiblesses:</h3> Les spectres ont une réaction toxique au <strong>sel</strong>.",
             "clues": [
-                "fingerprints",
-                "freezing",
+                "emf5",
+                "dots",
                 "spiritbox"
             ]
         },
         {
             "key": "yokai",
             "name_en": "Yokai",
-            "details_en": "A common type of ghost that is attracted to human voices. They can usually be found haunting family homes. <h3>Unique Strengths:</h3> Talking near a Yokai will anger it and cause it to attack more often. <h3>Weaknesses:</h3> While hunting, it can only hear <strong>voices close to it</strong>.",
+            "details_en": "A common type of ghost that is attracted to human voices. They can usually be found haunting family homes. <h3>Unique Strengths:</h3> Talking near a Yokai will anger it and increase its chance of attacking. <h3>Weaknesses:</h3> When hunting, a Yokai can only hear <strong>voices close to it</strong>.",
             "name_fr": "Yokai",
             "details_fr": "Un Yokai est un type courant de fantôme attiré par les voix humaines. Ils sont généralement présents dans les demeures familiales.<h3>Forces uniques :</h3> Parler près d'un Yokai l'énervera et il risquera d'attaquer.<h3>Faiblesses :</h3> Lors d'une chasse, le Yokai ne peut entendre que les <strong>voix proches</strong> de lui.<h3>Autres infos:</h3>Le Yokai est une entité qui a un comportement très particulier, dans lequel il devient plus agressif lorsque des joueurs parlent à proximité. Cela lui permet de commencer une chasse même lorsque les joueurs possèdent encore beaucoup de santé mentale. Bien que le Yokai soit très sensible aux voix, lorsqu’il chasse, le rayon dans lequel il peut entendre les joueurs est beaucoup plus petit que celui des autres types de fantômes.",
             "clues": [
                 "spiritbox",
                 "orbs",
-                "writing"
+                "dots"
             ]
         },
         {
@@ -166,7 +190,7 @@
             "clues": [
                 "freezing",
                 "orbs",
-                "writing"
+                "dots"
             ]
         }
     ],
@@ -201,7 +225,7 @@
         },
         {
             "key": "writing",
-            "name_en": "Ghost Writing",
+            "name_en": "Ghost Writing Book",
             "details_en": "some writing appeared in a ghost book",
             "name_fr": "Écriture Fantômatique",
             "details_fr": "des écritures sont apparues dans un livre"
@@ -212,6 +236,13 @@
             "details_en": "a ghost orb was observed with the video camera",
             "name_fr": "Orbe Fantômatique",
             "details_fr": "une orbe fantômatique a été observée avec une caméra"
+        },
+        {
+            "key": "dots",
+            "name_en": "D.O.T.S Projector",
+            "details_en": "a ghost silhouette appeared in the laser grid",
+            "name_fr": "D.O.T.S Projector",
+            "details_fr": "a ghost silhouette appeared in the laser grid"
         }
     ]
 }
