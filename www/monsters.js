@@ -173,7 +173,7 @@ const View = {
             this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.UNKNOWN;
         }
         this.updateAllClueButtonsStyle();
-        this.updateClueNameStyle(elRow);
+        this.updateAllClueNameStyle();
         Controller.onClueSelectionChanged(this.clueSelectionState);
     },
     onClueButtonUnknownClicked: function View_onClueButtonUnknownClicked(event) {
@@ -270,6 +270,12 @@ const View = {
                 elButtonAbsent.classList.remove("cluebuttonoff")
                 elButtonAbsent.classList.add("cluebuttonon")
                 break;
+        }
+    },
+    updateAllClueNameStyle: function View_updateAllClueNameStyle() {
+        const elTable = document.getElementById("clues");
+        for (const elRow of elTable.rows) {
+            this.updateClueNameStyle(elRow);
         }
     },
     updateClueNameStyle: function View_updateClueNameStyle(elRow) {
