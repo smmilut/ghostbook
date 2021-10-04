@@ -1,98 +1,170 @@
-import * as utils from "./utils.js";
+import * as Io from "./io.js";
+import * as Utils from "./utils.js";
 
-
-
-/*
-* All Monster data and its display on the page
-*/
-export const MonsterCodex = (function buildMonsterCodex() {
-    // the object we are building
-    const objMonsterCodex = {};
-    // Monster codex data retrieved from the JSON file
-    let json_obj = {};
-
-    const Locale = utils.Locale(reload);
-
-    /*
-    * Get monster database and update monster and clue data on the page
-    */
-    objMonsterCodex.fetchData = function Codex_fetchData(url) {
-        return utils.Http.Request({
+/** All Monster data and its display on the page */
+const Model = {
+    init: async function Model_init() {
+        /** Monster codex data retrieved from the JSON file */
+        this.json_obj = {};
+        await this.fetchData("data/monsters.json");
+    },
+    /** Get monster database and update monster and clue data on the page
+     * @param {string} url URL of database file
+     */
+    fetchData: async function Model_fetchData(url) {
+        const data = await Io.Http.Request({
             url: url || "data/monsters.json"
-        })
-            .then(function gotMonsters(data) {
-                updateLocalDatabase(data.responseText);
-                reload();
-            });
-    };
-
-
-    function reload() {
-        updateVersionInfo()
-        updateVisibleMonsters();
-        initCluesHtml();
-    };
-
-    /*
-    * Update monster and clue data from json text
-    */
-    function updateLocalDatabase(jsonText) {
-        json_obj = JSON.parse(jsonText);
-    }
-
-    /*
-    * Display info about the game version
-    */
-    function updateVersionInfo() {
-        const elVersionInfo = document.getElementById("versioninfo");
-        elVersionInfo.innerHTML = json_obj.game_version;
-    }
-
-    /*
-    * Display the details about that monster
-    */
-    function showDetails(monsterKey) {
-        const elDetails = document.getElementById("details");
-        json_obj.monsters.forEach(function findMonsterNamed(monster) {
-            if (monster.key == monsterKey) {
-                elDetails.innerHTML = "";
-                // Add monster name as title
-                const nameHeader = document.createElement("h2");
-                nameHeader.innerText = Locale.get(monster, "name") + " :";
-                elDetails.append(nameHeader);
-                // Add details from database
-                const detailsDiv = document.createElement("div");
-                detailsDiv.innerHTML = Locale.get(monster, "details");
-                elDetails.append(detailsDiv);
-            }
         });
-    };
+        this.updateLocalDatabase(data.responseText);
+        Controller.onDataLoaded();
+    },
+    /** Update monster and clue data from json text */
+    updateLocalDatabase: function Model_updateLocalDatabase(jsonText) {
+        this.json_obj = JSON.parse(jsonText);
+    },
+    getVersionInfo: function Model_getVersionInfo() {
+        return this.json_obj.game_version;
+    },
+    getAllClues: function Model_getAllClues() {
+        return Utils.arrayClone(this.json_obj.clues);
+    },
+    /** get clue name when given the clue key */
+    getClueForKey: function Model_getClueForKey(clueKey) {
+        for (let clueIndex = 0; clueIndex < this.json_obj.clues.length; clueIndex++) {
+            const clue = this.json_obj.clues[clueIndex];
+            if (clueKey == clue.key) {
+                return Utils.jsonClone(clue);
+            }
+        }
+    },
+    getMonsterForKey: function Model_getMonsterForKey(monsterKey) {
+        for (const monster of this.json_obj.monsters) {
+            if (monster.key == monsterKey) {
+                return Utils.jsonClone(monster);
+            }
+        }
+    },
+    getAllMonsters: function Model_getAllMonsters() {
+        return Utils.arrayClone(this.json_obj.monsters);
+    },
+    /** return a list of monsters that match the selected clues */
+    getMatchingMonsters: function Model_getMatchingMonsters(selectedClues) {
+        return Utils.arrayClone(
+            this.json_obj.monsters.filter(
+                function verifyMonster(monster) {
+                    for (let clueIndex = 0; clueIndex < selectedClues.length; clueIndex++) {
+                        const clueName = selectedClues[clueIndex];
+                        if (!monster.clues.includes(clueName)) {
+                            // one selected clue doesn't match this monster
+                            // eliminate the monster
+                            return false;
+                        }
+                    }
+                    // all selected clues match the monster's clues
+                    return true;
+                }
+            )
+        );
+    },
+};
 
-    /*
-    * Clear the monster details display
-    */
-    function clearDetails(monsterName) {
+const Controller = {
+    init: function Controller_init() {
+
+    },
+    onLocaleChanged: function Controller_onLocaleChanged() {
+        this.reload();
+    },
+    onDataLoaded: function Controller_onDataLoaded() {
+        this.reload();
+    },
+    reload: function Controller_reload() {
+        const versionInfo = Model.getVersionInfo();
+        View.updateVersionInfo(versionInfo)
+        const allMonsters = Model.getAllMonsters();
+        View.updateVisibleMonsters(allMonsters, true);
+        const clues = Model.getAllClues();
+        View.initCluesHtml(clues);
+    },
+    onClueSelectionChanged: function Controller_onClueSelectionChanged(selectedClues) {
+        const matchingMonsters = Model.getMatchingMonsters(selectedClues);
+        /*** prepare the list of monsters and clues */
+        /** do we show all clues anyway ? */
+        let showAll;
+        /** the list of only the monsters that match the selected clues */
+        let validMonsters;
+        if (selectedClues.length == 0) {
+            // Selection is empty when unselecting all.
+            // ==> Showing all monsters.
+            showAll = true;
+            validMonsters = Model.getAllMonsters();
+        } else {
+            showAll = false;
+            validMonsters = Model.getMatchingMonsters(selectedClues);
+        }
+        if (validMonsters.length == 0) {
+            // impossible combination of clues
+            View.errorNoMatchingMonsters("No monsters are valid for this combination of clues.");
+        } else {
+            if (validMonsters.length != 1) {
+                View.clearDetails();
+            }
+            View.updateVisibleMonsters(validMonsters, showAll, selectedClues);
+        }
+        View.styleUnmatchingClues(matchingMonsters);
+    },
+    /** User clicked a monster to get its details */
+    onMonsterClicked: function Controller_onMonsterClicked(monsterKey) {
+        this.showDetailsForMonsterKey(monsterKey);
+    },
+    showDetailsForMonsterKey: function Controller_showDetailsForMonsterKey(monsterKey) {
+        const monster = Model.getMonsterForKey(monsterKey);
+        View.showDetails(monster);
+    },
+    getClueForKey: function Controller_getClueForKey(clueKey) {
+        return Model.getClueForKey(clueKey);
+    },
+};
+
+const View = {
+    init: function View_init() {
+        this.locale = newLocale();
+    },
+    /** Display info about the game version */
+    updateVersionInfo: function View_updateVersionInfo(versionInfo) {
+        const elVersionInfo = document.getElementById("versioninfo");
+        elVersionInfo.innerHTML = versionInfo;
+    },
+    /** Display the details about that monster */
+    showDetails: function View_showDetails(monster) {
+        const elDetails = document.getElementById("details");
+        elDetails.innerHTML = "";
+        // Add monster name as title
+        const nameHeader = document.createElement("h2");
+        nameHeader.innerText = this.locale.get(monster, "name") + " :";
+        elDetails.append(nameHeader);
+        // Add details from database
+        const detailsDiv = document.createElement("div");
+        detailsDiv.innerHTML = this.locale.get(monster, "details");
+        elDetails.append(detailsDiv);
+    },
+    /** Clear the monster details display */
+    clearDetails: function View_clearDetails() {
         const elDetails = document.getElementById("details");
         elDetails.innerHTML = "(click a ghost for details)";
-    }
-
-    /*
-    * Init the list of clues
-    */
-    function initCluesHtml() {
+    },
+    /** Init the list of clues */
+    initCluesHtml: function View_initCluesHtml(clues) {
         const elClues = document.getElementById("clues");
         elClues.innerHTML = "";
-        json_obj.clues.forEach(function initClue(clue) {
-            let elClue = new Option(Locale.get(clue, "name"), clue.key, false, false);
+        clues.forEach(function initClue(clue) {
+            let elClue = new Option(this.locale.get(clue, "name"), clue.key, false, false);
             elClues.options.add(elClue);
-        });
-        elClues.addEventListener("change", clueSelectionChanged, false);
-    }
-
-    /*
-    * User (un)selected clues
-    */
-    function clueSelectionChanged(event) {
+        }.bind(this));
+        elClues.addEventListener("change", this.clueSelectionChanged.bind(this), false);
+    },
+    /** User (un)selected clues */
+    clueSelectionChanged: function View_clueSelectionChanged(event) {
         let selectedClues = [];
         const options = event.target.options;
         for (let optionIndex = 0; optionIndex < options.length; optionIndex++) {
@@ -101,15 +173,10 @@ export const MonsterCodex = (function buildMonsterCodex() {
                 selectedClues.push(option.value);
             }
         }
-        updateVisibleMonsters(selectedClues);
-        styleUnmatchingClues(selectedClues);
-    }
-
-    /*
-    * mark all the clues that are impossible with the current selected combination
-    */
-    function styleUnmatchingClues(selectedClues) {
-        const matchingMonsters = getMatchingMonsters(selectedClues);
+        Controller.onClueSelectionChanged(selectedClues);
+    },
+    /** mark all the clues that are impossible with the current selected combination of monsters */
+    styleUnmatchingClues: function View_styleUnmatchingClues(matchingMonsters) {
         const options = document.getElementById("clues").options;
         for (let optionIndex = 0; optionIndex < options.length; optionIndex++) {
             const option = options[optionIndex];
@@ -127,184 +194,189 @@ export const MonsterCodex = (function buildMonsterCodex() {
                 }
             }
         }
-    }
-
-
-    /*
-    * return a list of monsters that match the selected clues
-    */
-    function getMatchingMonsters(selectedClues) {
-        return json_obj.monsters.filter(function verifyMonster(monster) {
-            for (let clueIndex = 0; clueIndex < selectedClues.length; clueIndex++) {
-                const clueName = selectedClues[clueIndex];
-                if (!monster.clues.includes(clueName)) {
-                    // one selected clue doesn't match this monster
-                    // eliminate the monster
-                    return false;
-                }
-            }
-            // all selected clues match the monster's clues
-            return true;
-        });
-    }
-
-    /*
-    * update the list of visible monsters and their displayed clues
-    */
-    function updateVisibleMonsters(selectedClues) {
-        /*** prepare the list of monsters and clues */
-        // do we show all clues anyway ?
-        let showAll;
-        // the list of only the monsters that match the selected clues
-        let validMonsters;
-        if (selectedClues == undefined || selectedClues.length == 0) {
-            // Selection is undefined when initializing.
-            // Selection is empty when unselecting all.
-            // ==> Showing all monsters.
-            showAll = true;
-            validMonsters = json_obj.monsters;
-        } else {
-            showAll = false;
-            validMonsters = getMatchingMonsters(selectedClues);
-        }
-
+    },
+    /** update the list of visible monsters and their displayed clues
+     * @param {array} validMonsters array of valid monster objects (with key, name, clues, ...)
+     * @param {bool} showAll do we show all monsters anyway ?
+     * @param {array} selectedClues (optional) array of selected clues
+     */
+    updateVisibleMonsters: function View_updateVisibleMonsters(validMonsters, showAll, selectedClues) {
         /*** update the display of the monster table */
-        const monsterTableBuilder = MonsterTableBuilder();
-
-        if (validMonsters.length == 0) {
-            // impossible combination of clues
-            monsterTableBuilder.createRow();
-            monsterTableBuilder.showError("No monsters are valid for this combination of clues.");
-            monsterTableBuilder.finalize();
-            return;
-        }
-
-        for (let monsterIndex = 0; monsterIndex < validMonsters.length; monsterIndex++) {
-            const monster = validMonsters[monsterIndex];
+        const monsterTableBuilder = newMonsterTableBuilder();
+        for (const validMonster of validMonsters) {
             // New row for each monster
             monsterTableBuilder.createRow();
             // First invisible cell displays the monster key
-            monsterTableBuilder.createCellKey(monster.key);
+            monsterTableBuilder.createCellKey(validMonster.key);
             // Second cell displays the monster name
-            monsterTableBuilder.createCellName(Locale.get(monster, "name"));
+            monsterTableBuilder.createCellName(this.locale.get(validMonster, "name"));
             if (validMonsters.length == 1) {
                 monsterTableBuilder.markCellFound();
-                showDetails(monster.key);
+                Controller.showDetailsForMonsterKey(validMonster.key);
                 break;
             }
             // All other cells display the remaining clues
-            for (let clueIndex = 0; clueIndex < monster.clues.length; clueIndex++) {
-                const clueKey = monster.clues[clueIndex];
+            for (const clueKey of validMonster.clues) {
+                const clue = Controller.getClueForKey(clueKey);
+                const clueName = this.locale.get(clue, "name");
                 if (showAll || !selectedClues.includes(clueKey)) {
                     // Display this clue
-                    monsterTableBuilder.createCellClue(clueKey);
+                    monsterTableBuilder.createCellClue(clueName);
                 }
             }
-        };
-        if (validMonsters.length != 1) {
-            clearDetails();
         }
         monsterTableBuilder.finalize();
-    }
+    },
+    /** User clicked a monster to get its details */
+    onMonsterClicked: function View_onMonsterClicked(event) {
+        const monsterKey = event.target.parentElement.firstChild.innerText;
+        Controller.onMonsterClicked(monsterKey);
+    },
+    /** display error when impossible combination of clues */
+    errorNoMatchingMonsters: function View_errorNoMatchingMonsters(message) {
+        const monsterTableBuilder = newMonsterTableBuilder();
+        monsterTableBuilder.createRow();
+        monsterTableBuilder.showError(message || "No monsters are valid in this situation.");
+        monsterTableBuilder.finalize();
+    },
+};
 
-    /*
-    * get clue name when given the clue key
-    */
-    function getClueForKey(clueKey) {
-        for (let clueIndex = 0; clueIndex < json_obj.clues.length; clueIndex++) {
-            const clue = json_obj.clues[clueIndex];
-            if (clueKey == clue.key) {
-                return Locale.get(clue, "name");
+const MonsterTableBuilder = {
+    init: function MonsterTableBuilder_init(parentId) {
+        this.parentId = parentId || "suspects";
+        this.tableBody = document.createElement("tbody");
+        this.currentTableRow = undefined;
+        this.currentColumnIndex = undefined;
+        this.currentCell = undefined;
+    },
+    createRow: function MonsterTableBuilder_createRow() {
+        this.currentTableRow = this.tableBody.insertRow(-1);
+        this.currentTableRow.addEventListener("click", View.onMonsterClicked.bind(View), false);
+        this.currentColumnIndex = 0;
+        return this.currentTableRow;
+    },
+
+    /** Create a table cell that will contain the monster's key */
+    createCellKey: function MonsterTableBuilder_createCellKey(monsterKey) {
+        this.currentCell = this.currentTableRow.insertCell(this.currentColumnIndex++);
+        this.currentCell.innerHTML = monsterKey;
+        // This special cell is invisible
+        this.currentCell.style.display = "none";
+        return this.currentCell;
+    },
+    /** Create a table cell that will contain the monster's name */
+    createCellName: function MonsterTableBuilder_createCellName(monsterName) {
+        this.currentCell = this.currentTableRow.insertCell(this.currentColumnIndex++);
+        // special style for the mosnter name
+        this.currentCell.classList.add("monstername")
+        this.currentCell.innerHTML = monsterName;
+        return this.currentCell;
+    },
+    /** Mark the current cell to show that this monster was found */
+    markCellFound: function MonsterTableBuilder_markCellFound() {
+        this.currentCell.classList.add("foundmonster");
+        return this.currentCell;
+    },
+    /** Create a new table cell for a monster clue */
+    createCellClue: function MonsterTableBuilder_createCellClue(clueName) {
+        this.currentCell = this.currentTableRow.insertCell(this.currentColumnIndex++);
+        this.currentCell.innerHTML = clueName;
+        return this.currentCell;
+    },
+    /** Show an error inside the table */
+    showError: function MonsterTableBuilder_showError(messageText) {
+        this.currentCell = this.currentTableRow.insertCell(this.currentColumnIndex++);
+        this.currentCell.classList.add("monstererror")
+        this.currentCell.innerHTML = messageText;
+        return this.currentCell;
+    },
+    /** Finalize the table and add it to the page */
+    finalize: function MonsterTableBuilder_finalize() {
+        const elSuspects = document.getElementById(this.parentId);
+        elSuspects.innerHTML = "";
+        elSuspects.appendChild(this.tableBody);
+        return this.tableBody;
+    },
+};
+/** Fully instantiate a new MonsterTableBuilder */
+function newMonsterTableBuilder() {
+    const o = Object.create(MonsterTableBuilder);
+    o.init();
+    return o;
+}
+
+/** Get object values based on selected Locale */
+const Locale = {
+    init: function Locale_init() {
+        /** default fallback locale */
+        this.defaultLocale = "en";
+        /** key used to set locales from the url parameters */
+        this.urlParameterKey = "lang";
+        this.userPreferredLocales = this.getUserPreferredLocales();
+        /** locale manually selected in the UI */
+        this.selectedLocale = null;
+        this.initSelector();
+    },
+    /** array of user preferred locales, in order */
+    getUserPreferredLocales: function Locale_getUserPreferredLocales() {
+        /** locales configured in browser, in order */
+        const browserLocales = navigator.languages;
+        // looking for a user choice in the url
+        const urlParameters = new URLSearchParams(window.location.search);
+        if (urlParameters) {
+            const urlParameterLocaleString = urlParameters.get(this.urlParameterKey);
+            if (urlParameterLocaleString != null) {
+                let userPreferredLocales = urlParameterLocaleString.split(",");
+                userPreferredLocales.push(...browserLocales);
+                return userPreferredLocales;
             }
         }
-    }
+        return [...browserLocales];
+    },
+    initSelector: function Locale_initSelector() {
+        const elSelect = document.getElementById("language");
+        elSelect.addEventListener("change", this.onLocaleSelectionChanged.bind(this));
+    },
+    onLocaleSelectionChanged: function Locale_onLocaleSelectionChanged(event) {
+        const option = event.target.value;
+        if (this.selectedLocale) {
+            // remove previous selection
+            this.userPreferredLocales.shift();
+        }
+        if (option == "none") {
+            this.selectedLocale = null;
+        } else {
+            this.selectedLocale = option;
+            this.userPreferredLocales.unshift(this.selectedLocale);
+        }
+        Controller.onLocaleChanged();
+    },
+    /** Get object value based on selected Locale */
+    get: function Locale_get(object, propertyName) {
+        for (const userPreferredLocale of this.userPreferredLocales) {
+            // turn "en-US" into "en" for example
+            const userPreferredLocaleShort = userPreferredLocale.split("-", 1)[0];
+            const localizedPropertyName = propertyName + "_" + userPreferredLocaleShort;
+            const localizedPropertyValue = object[localizedPropertyName];
+            if (localizedPropertyValue !== undefined) {
+                return localizedPropertyValue;
+            }
+        }
+        // property not found for locale, falling back to defaultLocale
+        const defaultPropertyName = propertyName + "_" + this.defaultLocale;
+        const defaultPropertyValue = object[defaultPropertyName];
+        return defaultPropertyValue;
+    },
+};
+/** Fully instantiate a new Locale */
+function newLocale() {
+    const o = Object.create(Locale);
+    o.init();
+    return o;
+}
 
-    /*
-    * User clicked a monster to get its details
-    */
-    function monsterClicked(event) {
-        const monsterKey = event.target.parentElement.firstChild.innerText;
-        showDetails(monsterKey);
-    }
-
-    const MonsterTableBuilder = function build_MonsterTableBuilder() {
-        const objMonsterTableBuilder = {};
-
-        const tableBody = document.createElement("tbody");
-
-        let currentTableRow;
-        let currentColumnIndex;
-        let currentCell;
-
-        objMonsterTableBuilder.createRow = function objMonsterTableBuilder_newRow() {
-            currentTableRow = tableBody.insertRow(-1);
-            currentTableRow.addEventListener("click", monsterClicked, false);
-            currentColumnIndex = 0;
-            return currentTableRow;
-        };
-        
-        /*
-        * Create a table cell that will contain the monster's key
-        */
-        objMonsterTableBuilder.createCellKey = function objMonsterTableBuilder_createCellKey(monsterKey) {
-            currentCell = currentTableRow.insertCell(currentColumnIndex++);
-            currentCell.innerHTML = monsterKey;
-            // This special cell is invisible
-            currentCell.style.display = "none";
-            return currentCell;
-        };
-
-        /*
-        * Create a table cell that will contain the monster's name
-        */
-        objMonsterTableBuilder.createCellName = function objMonsterTableBuilder_createCellName(monsterName) {
-            currentCell = currentTableRow.insertCell(currentColumnIndex++);
-            // special style for the mosnter name
-            currentCell.classList.add("monstername")
-            currentCell.innerHTML = monsterName;
-            return currentCell;
-        };
-
-        /*
-        * Mark the current cell to show that this monster was found
-        */
-        objMonsterTableBuilder.markCellFound = function objMonsterTableBuilder_markCellFound() {
-            currentCell.classList.add("foundmonster");
-            return currentCell;
-        };
-
-        /*
-        * Create a new table cell for a monster clue
-        */
-        objMonsterTableBuilder.createCellClue = function objMonsterTableBuilder_createCellClue(clueKey) {
-            currentCell = currentTableRow.insertCell(currentColumnIndex++);
-            const clueName = getClueForKey(clueKey);
-            currentCell.innerHTML = clueName;
-            return currentCell;
-        };
-
-        /*
-        * Show an error inside the table
-        */
-        objMonsterTableBuilder.showError = function objMonsterTableBuilder_showError(messageText) {
-            currentCell = currentTableRow.insertCell(currentColumnIndex++);
-            currentCell.classList.add("monstererror")
-            currentCell.innerHTML = messageText;
-            return currentCell;
-        };
-
-        /*
-        * Finalize the table and add it to the page
-        */
-        objMonsterTableBuilder.finalize = function objMonsterTableBuilder_finalize() {
-            const elSuspects = document.getElementById("suspects");
-            elSuspects.innerHTML = "";
-            elSuspects.appendChild(tableBody);
-            return tableBody;
-        };
-
-        return objMonsterTableBuilder;
-    };
-
-    return objMonsterCodex;
-})();
+export async function init() {
+    Controller.init();
+    View.init();
+    await Model.init()
+}
