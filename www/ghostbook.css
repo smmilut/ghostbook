@@ -56,6 +56,10 @@ h2 {
     font-family: "Lucida Console", Monaco, monospace;
 }
 
+.cluebuttoncell button {
+    height: 28px;
+}
+
 .cluebuttonoff {
     background-color: #213;
     color: #999;
@@ -73,21 +77,21 @@ h2 {
 
 .cluenamecell {
     padding: 0px 0px 0px 5px;
+    padding-top: 0px;
+    padding-right: 8px;
+    padding-bottom: 0px;
+    padding-left: 5px;
 }
 
 .unmatchedclue {
     color: red;
     cursor: not-allowed;
-    font-style: italic;
     text-decoration: line-through;
 }
 
-.unmatchedclue::before {
-    content: "(";
-}
-
-.unmatchedclue::after {
-    content: ")";
+.cluenamedimmed {
+    color: #222;
+    font-style: italic;
 }
 
 /* collapse system */

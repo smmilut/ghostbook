@@ -173,6 +173,7 @@ const View = {
             this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.UNKNOWN;
         }
         this.updateAllClueButtonsStyle();
+        this.updateClueNameStyle(elRow);
         Controller.onClueSelectionChanged(this.clueSelectionState);
     },
     onClueButtonUnknownClicked: function View_onClueButtonUnknownClicked(event) {
@@ -181,6 +182,7 @@ const View = {
         const clueKey = elRow.firstChild.innerText;
         this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.UNKNOWN;
         this.updateClueButtonsStyle(elRow);
+        this.updateClueNameStyle(elRow);
         Controller.onClueSelectionChanged(this.clueSelectionState);
     },
     onClueButtonPresentClicked: function View_onClueButtonPresentClicked(event) {
@@ -194,6 +196,7 @@ const View = {
             this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.PRESENT;
         }
         this.updateClueButtonsStyle(elRow);
+        this.updateClueNameStyle(elRow);
         Controller.onClueSelectionChanged(this.clueSelectionState);
     },
     onClueButtonAbsentClicked: function View_onClueButtonAbsentClicked(event) {
@@ -207,6 +210,7 @@ const View = {
             this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.ABSENT;
         }
         this.updateClueButtonsStyle(elRow);
+        this.updateClueNameStyle(elRow);
         Controller.onClueSelectionChanged(this.clueSelectionState);
     },
     onClueNameClicked: function View_onClueNameClicked(event) {
@@ -226,6 +230,7 @@ const View = {
                 break;
         }
         this.updateClueButtonsStyle(elRow);
+        this.updateClueNameStyle(elRow);
         Controller.onClueSelectionChanged(this.clueSelectionState);
     },
     updateAllClueButtonsStyle: function View_updateAllClueButtonsStyle() {
@@ -265,6 +270,15 @@ const View = {
                 elButtonAbsent.classList.remove("cluebuttonoff")
                 elButtonAbsent.classList.add("cluebuttonon")
                 break;
+        }
+    },
+    updateClueNameStyle: function View_updateClueNameStyle(elRow) {
+        const clueKey = elRow.firstChild.innerText;
+        const elName = elRow.children[4];
+        if (this.isClueSelected(clueKey)) {
+            elName.classList.add("cluenamedimmed");
+        } else {
+            elName.classList.remove("cluenamedimmed");
         }
     },
     /** Did the user explicitly make a selection for this clue ? */
