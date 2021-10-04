@@ -1,5 +1,5 @@
 /****  General  ****/
-body, button, input, select, option {
+body {
   font-family: Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", sans-serif;
   font-size: 100%;
   color: #ddd;
@@ -13,8 +13,19 @@ code {
   font-family: "Lucida Console", Monaco, monospace;
 }
 
-select {
-  border: 2px solid #324;
+button {
+  padding: 0.5em 1em;
+  border: none;
+  cursor: pointer;
+  background-color: #324;
+  color: #ddd;
+  transition-duration: 0.4s;
+  box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.2);
+}
+
+button:hover {
+  background-color: #213;
+  color: #999;
   box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.2);
 }
 

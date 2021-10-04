@@ -24,7 +24,8 @@
         </header>
         <div id="cluesbox" class="box">
             <h2>Clues :</h2>
-            <select id="clues" multiple size="7"></select>
+            <button id="clearclues">∅ Clear</button>
+            <table id="clues"></table>
         </div>
 
         <div id="suspectsbox" class="box">
@@ -41,9 +42,9 @@
                     <h2>Usage help :</h2>
                     <p>In the list of clues :
                     <ul>
-                        <li>Click a clue to make it selected.</li>
-                        <li>Click a selected clue to make it unselected.</li>
-                        <li>Ctrl+click to select multiple clues.</li>
+                        <li>Click a clue to cycle between the three investigations states : unknown, clue detected, clue can't be detected</li>
+                        <li>Click a clue state to toggle it.</li>
+                        <li>Use the "Clear" button to clear the selection for a new mission.</li>
                     </ul>
                     </p>
                     <p>In the resulting list of ghosts :

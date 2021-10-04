@@ -50,21 +50,48 @@ h2 {
     font-style: italic;
 }
 
-.unmatched {
+.cluebuttoncell {
+    padding: 0px;
+    font-size: 0.7em;
+    font-family: "Lucida Console", Monaco, monospace;
+}
+
+.cluebuttonoff {
+    background-color: #213;
+    color: #999;
+}
+
+.cluebuttonon {
+    background-color: #74b;
+    color: #ddd;
+}
+
+.cluebuttonon:hover {
+    background-color: #53a;
+    color: #aaa;
+}
+
+.cluenamecell {
+    padding: 0px 0px 0px 5px;
+}
+
+.unmatchedclue {
     color: red;
     cursor: not-allowed;
     font-style: italic;
+    text-decoration: line-through;
 }
 
-.unmatched::before {
+.unmatchedclue::before {
     content: "(";
 }
 
-.unmatched::after {
+.unmatchedclue::after {
     content: ")";
 }
 
 /* collapse system */
+
 .collapsed {
     display: none;
 }
@@ -72,11 +99,12 @@ h2 {
 .clicktouncollapse {
     font-style: italic;
     color: #aaa;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .clicktouncollapse::before {
-    content: "\229E";  /* squared plus &#x229E */
+    /* squared plus &#x229E */
+    content: "\229E";
     font-style: normal;
     font-size: 50%;
     padding-right: 10px;
@@ -86,11 +114,12 @@ h2 {
 
 .clicktocollapse {
     font-style: normal;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .clicktocollapse::before {
-    content: "\229F ";  /* squared minus &#8863 or &#x229F */
+    /* squared minus &#8863 or &#x229F */
+    content: "\229F ";
     font-style: normal;
     font-size: 50%;
     padding-right: 10px;
@@ -126,12 +155,12 @@ header {
     "title"
     "clues"
     "suspects"
-    "details"
+    "details" 
     "infos";
     border-radius: 0px;
 }
 
-@media only screen and (min-width: 900px)  {
+@media only screen and (min-width: 900px) {
     #wrapper {
         grid-template-columns: 30% auto;
         grid-template-rows: auto minmax(min-content, 10px) auto auto;
@@ -142,7 +171,6 @@ header {
         "infos infos";
         border-radius: 5px;
     }
-
     body {
         margin: 10px;
     }

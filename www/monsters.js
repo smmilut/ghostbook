@@ -48,14 +48,19 @@ const Model = {
         return Utils.arrayClone(this.json_obj.monsters);
     },
     /** return a list of monsters that match the selected clues */
-    getMatchingMonsters: function Model_getMatchingMonsters(selectedClues) {
+    getMatchingMonsters: function Model_getMatchingMonsters(clueStates) {
         return Utils.arrayClone(
             this.json_obj.monsters.filter(
                 function verifyMonster(monster) {
-                    for (let clueIndex = 0; clueIndex < selectedClues.length; clueIndex++) {
-                        const clueName = selectedClues[clueIndex];
-                        if (!monster.clues.includes(clueName)) {
+                    for (const clueKey in clueStates) {
+                        const clueState = clueStates[clueKey];
+                        if (clueState == CLUE_SELECTION_STATE.PRESENT && !monster.clues.includes(clueKey)) {
                             // one selected clue doesn't match this monster
+                            // eliminate the monster
+                            return false;
+                        }
+                        if (clueState == CLUE_SELECTION_STATE.ABSENT && monster.clues.includes(clueKey)) {
+                            // one unselected clue doesn't match this monster
                             // eliminate the monster
                             return false;
                         }
@@ -85,31 +90,20 @@ const Controller = {
         View.updateVisibleMonsters(allMonsters, true);
         const clues = Model.getAllClues();
         View.initCluesHtml(clues);
+        View.initClearCluesHtml();
     },
-    onClueSelectionChanged: function Controller_onClueSelectionChanged(selectedClues) {
-        const matchingMonsters = Model.getMatchingMonsters(selectedClues);
+    onClueSelectionChanged: function Controller_onClueSelectionChanged(clueStates) {
         /*** prepare the list of monsters and clues */
-        /** do we show all clues anyway ? */
-        let showAll;
         /** the list of only the monsters that match the selected clues */
-        let validMonsters;
-        if (selectedClues.length == 0) {
-            // Selection is empty when unselecting all.
-            // ==> Showing all monsters.
-            showAll = true;
-            validMonsters = Model.getAllMonsters();
-        } else {
-            showAll = false;
-            validMonsters = Model.getMatchingMonsters(selectedClues);
-        }
-        if (validMonsters.length == 0) {
+        const matchingMonsters = Model.getMatchingMonsters(clueStates);
+        if (matchingMonsters.length == 0) {
             // impossible combination of clues
             View.errorNoMatchingMonsters("No monsters are valid for this combination of clues.");
         } else {
-            if (validMonsters.length != 1) {
+            if (matchingMonsters.length != 1) {
                 View.clearDetails();
             }
-            View.updateVisibleMonsters(validMonsters, showAll, selectedClues);
+            View.updateVisibleMonsters(matchingMonsters);
         }
         View.styleUnmatchingClues(matchingMonsters);
     },
@@ -125,6 +119,12 @@ const Controller = {
         return Model.getClueForKey(clueKey);
     },
 };
+
+const CLUE_SELECTION_STATE = Object.freeze({
+    UNKNOWN: "unknown",
+    PRESENT: "present",
+    ABSENT: "absent",
+});
 
 const View = {
     init: function View_init() {
@@ -155,41 +155,144 @@ const View = {
     },
     /** Init the list of clues */
     initCluesHtml: function View_initCluesHtml(clues) {
-        const elClues = document.getElementById("clues");
-        elClues.innerHTML = "";
-        clues.forEach(function initClue(clue) {
-            let elClue = new Option(this.locale.get(clue, "name"), clue.key, false, false);
-            elClues.options.add(elClue);
-        }.bind(this));
-        elClues.addEventListener("change", this.clueSelectionChanged.bind(this), false);
-    },
-    /** User (un)selected clues */
-    clueSelectionChanged: function View_clueSelectionChanged(event) {
-        let selectedClues = [];
-        const options = event.target.options;
-        for (let optionIndex = 0; optionIndex < options.length; optionIndex++) {
-            const option = options[optionIndex];
-            if (option.selected) {
-                selectedClues.push(option.value);
-            }
+        this.clueSelectionState = {};
+        const clueTableBuilder = newClueTableBuilder();
+        for (const clue of clues) {
+            this.clueSelectionState[clue.key] = CLUE_SELECTION_STATE.UNKNOWN;
+            clueTableBuilder.createRow(clue.key, this.locale.get(clue, "name"));
         }
-        Controller.onClueSelectionChanged(selectedClues);
+        clueTableBuilder.finalize();
+        this.updateAllClueButtonsStyle();
+    },
+    initClearCluesHtml: function View_initClearCluesHtml() {
+        const elButtonClearClues = document.getElementById("clearclues");
+        elButtonClearClues.addEventListener("click", this.clearClues.bind(this));
+    },
+    clearClues: function View_clearClues() {
+        for (const clueKey in this.clueSelectionState) {
+            this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.UNKNOWN;
+        }
+        this.updateAllClueButtonsStyle();
+        Controller.onClueSelectionChanged(this.clueSelectionState);
+    },
+    onClueButtonUnknownClicked: function View_onClueButtonUnknownClicked(event) {
+        // the clue key is stored in the hidden first cell of the table
+        const elRow = event.target.parentElement.parentElement;
+        const clueKey = elRow.firstChild.innerText;
+        this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.UNKNOWN;
+        this.updateClueButtonsStyle(elRow);
+        Controller.onClueSelectionChanged(this.clueSelectionState);
+    },
+    onClueButtonPresentClicked: function View_onClueButtonPresentClicked(event) {
+        // the clue key is stored in the hidden first cell of the table
+        const elRow = event.target.parentElement.parentElement;
+        const clueKey = elRow.firstChild.innerText;
+        if (this.clueSelectionState[clueKey] == CLUE_SELECTION_STATE.PRESENT) {
+            // toggle
+            this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.UNKNOWN;
+        } else {
+            this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.PRESENT;
+        }
+        this.updateClueButtonsStyle(elRow);
+        Controller.onClueSelectionChanged(this.clueSelectionState);
+    },
+    onClueButtonAbsentClicked: function View_onClueButtonAbsentClicked(event) {
+        // the clue key is stored in the hidden first cell of the table
+        const elRow = event.target.parentElement.parentElement;
+        const clueKey = elRow.firstChild.innerText;
+        if (this.clueSelectionState[clueKey] == CLUE_SELECTION_STATE.ABSENT) {
+            // toggle
+            this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.UNKNOWN;
+        } else {
+            this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.ABSENT;
+        }
+        this.updateClueButtonsStyle(elRow);
+        Controller.onClueSelectionChanged(this.clueSelectionState);
+    },
+    onClueNameClicked: function View_onClueNameClicked(event) {
+        // the clue key is stored in the hidden first cell of the table
+        const elRow = event.target.parentElement;
+        const clueKey = elRow.firstChild.innerText;
+        /// cycle the state
+        switch (this.clueSelectionState[clueKey]) {
+            case CLUE_SELECTION_STATE.UNKNOWN:
+                this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.PRESENT;
+                break;
+            case CLUE_SELECTION_STATE.PRESENT:
+                this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.ABSENT;
+                break;
+            case CLUE_SELECTION_STATE.ABSENT:
+                this.clueSelectionState[clueKey] = CLUE_SELECTION_STATE.UNKNOWN;
+                break;
+        }
+        this.updateClueButtonsStyle(elRow);
+        Controller.onClueSelectionChanged(this.clueSelectionState);
+    },
+    updateAllClueButtonsStyle: function View_updateAllClueButtonsStyle() {
+        const elTable = document.getElementById("clues");
+        for (const elRow of elTable.rows) {
+            this.updateClueButtonsStyle(elRow);
+        }
+    },
+    updateClueButtonsStyle: function View_updateClueButtonsStyle(elRow) {
+        const clueKey = elRow.firstChild.innerText;
+        const clueState = this.clueSelectionState[clueKey];
+        const elButtonUnknown = elRow.children[1].firstChild;
+        const elButtonPresent = elRow.children[2].firstChild;
+        const elButtonAbsent = elRow.children[3].firstChild;
+        switch (clueState) {
+            case CLUE_SELECTION_STATE.UNKNOWN:
+                elButtonUnknown.classList.remove("cluebuttonoff");
+                elButtonUnknown.classList.add("cluebuttonon");
+                elButtonPresent.classList.remove("cluebuttonon")
+                elButtonPresent.classList.add("cluebuttonoff")
+                elButtonAbsent.classList.remove("cluebuttonon")
+                elButtonAbsent.classList.add("cluebuttonoff")
+                break;
+            case CLUE_SELECTION_STATE.PRESENT:
+                elButtonUnknown.classList.remove("cluebuttonon");
+                elButtonUnknown.classList.add("cluebuttonoff");
+                elButtonPresent.classList.remove("cluebuttonoff")
+                elButtonPresent.classList.add("cluebuttonon")
+                elButtonAbsent.classList.remove("cluebuttonon")
+                elButtonAbsent.classList.add("cluebuttonoff")
+                break;
+            case CLUE_SELECTION_STATE.ABSENT:
+                elButtonUnknown.classList.remove("cluebuttonon");
+                elButtonUnknown.classList.add("cluebuttonoff");
+                elButtonPresent.classList.remove("cluebuttonon")
+                elButtonPresent.classList.add("cluebuttonoff")
+                elButtonAbsent.classList.remove("cluebuttonoff")
+                elButtonAbsent.classList.add("cluebuttonon")
+                break;
+        }
+    },
+    /** Did the user explicitly make a selection for this clue ? */
+    isClueSelected: function View_isClueSelected(clueKey) {
+        if (this.clueSelectionState === undefined) {
+            return false;
+        }
+        const clueState = this.clueSelectionState[clueKey];
+        if (clueState !== CLUE_SELECTION_STATE.UNKNOWN) {
+            return true;
+        } else {
+            return false;
+        }
     },
     /** mark all the clues that are impossible with the current selected combination of monsters */
     styleUnmatchingClues: function View_styleUnmatchingClues(matchingMonsters) {
-        const options = document.getElementById("clues").options;
-        for (let optionIndex = 0; optionIndex < options.length; optionIndex++) {
-            const option = options[optionIndex];
+        const elClueTable = document.getElementById("clues");
+        for (const elTableRow of elClueTable.rows) {
+            const rowClueKey = elTableRow.firstChild.innerText;
+            const elClueName = elTableRow.children[4];
             // first, style all as unmatched
-            option.classList.add("unmatched");
-            for (let monsterIndex = 0; monsterIndex < matchingMonsters.length; monsterIndex++) {
-                const monster = matchingMonsters[monsterIndex];
-                for (let monsterClueIndex = 0; monsterClueIndex < monster.clues.length; monsterClueIndex++) {
-                    const monsterClueKey = monster.clues[monsterClueIndex];
-                    if (monsterClueKey == option.value) {
+            elClueName.classList.add("unmatchedclue");
+            for (const monster of matchingMonsters) {
+                for (const monsterClueKey of monster.clues) {
+                    if (monsterClueKey == rowClueKey) {
                         // at least one monster has this clue
                         // now style as matched
-                        option.classList.remove("unmatched");
+                        elClueName.classList.remove("unmatchedclue");
                     }
                 }
             }
@@ -197,10 +300,8 @@ const View = {
     },
     /** update the list of visible monsters and their displayed clues
      * @param {array} validMonsters array of valid monster objects (with key, name, clues, ...)
-     * @param {bool} showAll do we show all monsters anyway ?
-     * @param {array} selectedClues (optional) array of selected clues
      */
-    updateVisibleMonsters: function View_updateVisibleMonsters(validMonsters, showAll, selectedClues) {
+    updateVisibleMonsters: function View_updateVisibleMonsters(validMonsters) {
         /*** update the display of the monster table */
         const monsterTableBuilder = newMonsterTableBuilder();
         for (const validMonster of validMonsters) {
@@ -219,8 +320,9 @@ const View = {
             for (const clueKey of validMonster.clues) {
                 const clue = Controller.getClueForKey(clueKey);
                 const clueName = this.locale.get(clue, "name");
-                if (showAll || !selectedClues.includes(clueKey)) {
-                    // Display this clue
+                if (!this.isClueSelected(clueKey)) {
+                    /// The clue is not implicitly defined by user selection,
+                    ///  so display this clue.
                     monsterTableBuilder.createCellClue(clueName);
                 }
             }
@@ -229,6 +331,7 @@ const View = {
     },
     /** User clicked a monster to get its details */
     onMonsterClicked: function View_onMonsterClicked(event) {
+        // the monster key is stored in the hidden first cell of the table
         const monsterKey = event.target.parentElement.firstChild.innerText;
         Controller.onMonsterClicked(monsterKey);
     },
@@ -240,6 +343,88 @@ const View = {
         monsterTableBuilder.finalize();
     },
 };
+
+
+const ClueTableBuilder = {
+    init: function ClueTableBuilder_init(parentId) {
+        this.parentId = parentId || "clues";
+        this.tableBody = document.createElement("tbody");
+        this.currentTableRow = undefined;
+        this.currentColumnIndex = undefined;
+        this.currentCell = undefined;
+    },
+    createRow: function ClueTableBuilder_createRow(clueKey, localizedClueName) {
+        // New row for each clue
+        this.newRow();
+        // First invisible cell displays the clue key
+        this.createCellKey(clueKey);
+        // Next cell displays the button to mark the investigation state to "unknown"
+        this.createCellButtonUnknown();
+        // Next cell displays the button to mark the investigation state to "present"
+        this.createCellButtonPresent();
+        // Next cell displays the button to mark the investigation state to "absent"
+        this.createCellButtonAbsent();
+        // Next cell displays the clue name
+        this.createCellName(localizedClueName);
+    },
+    newRow: function ClueTableBuilder_newRow() {
+        this.currentTableRow = this.tableBody.insertRow(-1);
+        this.currentColumnIndex = 0;
+    },
+    /** Create a table cell that will contain the clue's key */
+    createCellKey: function ClueTableBuilder_createCellKey(clueKey) {
+        this.currentCell = this.currentTableRow.insertCell(this.currentColumnIndex++);
+        this.currentCell.innerHTML = clueKey;
+        // This special cell is invisible
+        this.currentCell.style.display = "none";
+    },
+    /** Create a table cell that will contain the button to mark the investigation state to "unknown" */
+    createCellButtonUnknown: function ClueTableBuilder_createCellButtonUnknown() {
+        this.currentCell = this.currentTableRow.insertCell(this.currentColumnIndex++);
+        const elButton = document.createElement("button");
+        this.currentCell.classList.add("cluebuttoncell");
+        elButton.innerHTML = "?";
+        elButton.addEventListener("click", View.onClueButtonUnknownClicked.bind(View));
+        this.currentCell.appendChild(elButton);
+    },
+    /** Create a table cell that will contain the button to mark the investigation state to "present" */
+    createCellButtonPresent: function ClueTableBuilder_createCellButtonPresent() {
+        this.currentCell = this.currentTableRow.insertCell(this.currentColumnIndex++);
+        const elButton = document.createElement("button");
+        this.currentCell.classList.add("cluebuttoncell");
+        elButton.innerHTML = "✓";
+        elButton.addEventListener("click", View.onClueButtonPresentClicked.bind(View));
+        this.currentCell.appendChild(elButton);
+    },
+    /** Create a table cell that will contain the button to mark the investigation state to "absent" */
+    createCellButtonAbsent: function ClueTableBuilder_createCellButtonAbsent() {
+        this.currentCell = this.currentTableRow.insertCell(this.currentColumnIndex++);
+        const elButton = document.createElement("button");
+        this.currentCell.classList.add("cluebuttoncell");
+        elButton.innerHTML = "×";
+        elButton.addEventListener("click", View.onClueButtonAbsentClicked.bind(View));
+        this.currentCell.appendChild(elButton);
+    },
+    /** Create a table cell that will contain the clue's name */
+    createCellName: function ClueTableBuilder_createCellName(localizedClueName) {
+        this.currentCell = this.currentTableRow.insertCell(this.currentColumnIndex++);
+        this.currentCell.classList.add("cluenamecell");
+        this.currentCell.innerHTML = localizedClueName;
+        this.currentCell.addEventListener("click", View.onClueNameClicked.bind(View));
+    },
+    /** Finalize the table and add it to the page */
+    finalize: function ClueTableBuilder_finalize() {
+        const elClues = document.getElementById(this.parentId);
+        elClues.innerHTML = "";
+        elClues.appendChild(this.tableBody);
+    },
+};
+/** Fully instantiate a new ClueTableBuilder */
+function newClueTableBuilder(parentId) {
+    const o = Object.create(ClueTableBuilder);
+    o.init(parentId);
+    return o;
+}
 
 const MonsterTableBuilder = {
     init: function MonsterTableBuilder_init(parentId) {
@@ -267,7 +452,7 @@ const MonsterTableBuilder = {
     /** Create a table cell that will contain the monster's name */
     createCellName: function MonsterTableBuilder_createCellName(monsterName) {
         this.currentCell = this.currentTableRow.insertCell(this.currentColumnIndex++);
-        // special style for the mosnter name
+        // special style for the monster name
         this.currentCell.classList.add("monstername")
         this.currentCell.innerHTML = monsterName;
         return this.currentCell;
@@ -299,9 +484,9 @@ const MonsterTableBuilder = {
     },
 };
 /** Fully instantiate a new MonsterTableBuilder */
-function newMonsterTableBuilder() {
+function newMonsterTableBuilder(parentId) {
     const o = Object.create(MonsterTableBuilder);
-    o.init();
+    o.init(parentId);
     return o;
 }
 
